@@ -1,0 +1,27 @@
+# nodejs
+node_modules/
+npm-debug.log
+
+# IDE
+.idea/
+
+# log
+log/*
+!log/.gitkeep
+
+# default configuration file
+config/*.default.yaml
+
+# deprecated file cache
+data/semantic*.yaml
+
+# binaries
+docs/dist/
+docs/apidoc/index.html
+dist/
+
+# assets
+assets/
+
+# documentation
+docs/virtual_worker_api.yaml

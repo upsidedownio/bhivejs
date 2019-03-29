@@ -1,0 +1,16 @@
+extends: "eslint:recommended"
+
+env:
+  node: true
+  es6: true
+  
+
+parserOptions:
+  ecmaVersion: 9 # to use async / await
+  sourceType: 'module'
+
+rules:
+  no-unused-vars: warn
+  no-console: 0
+#  chai-expect/missing-assertion: 2
+#  chai-expect/terminating-properties: 1
