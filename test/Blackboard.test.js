@@ -1,5 +1,5 @@
 import test from 'ava';
-import Blackboard from './Blackboard';
+import Blackboard from '../src/core/Blackboard';
 import uuid from 'uuid/v4';
 
 test('Construct', t => {

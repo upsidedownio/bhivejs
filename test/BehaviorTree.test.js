@@ -1,5 +1,5 @@
 import test from 'ava';
-import BehaviorTree from './BehaviorTree';
+import BehaviorTree from '../src/core/BehaviorTree';
 
 test('Construct', t => {
     let bt = new BehaviorTree();
