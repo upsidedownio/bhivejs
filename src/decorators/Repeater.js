@@ -2,7 +2,7 @@ const Decorator = require('../core/BaseDecorator');
 const {SUCCESS, ERROR, FAILURE} = require('../constants');
 
 /**
- * Repeater is a decorator that repeats the tick signal until the child node
+ * Repeater is a decorator that repeats the run signal until the child node
  * return `RUNNING` or `ERROR`. Optionally, a maximum number of repetitions
  * can be defined.
  *
@@ -38,27 +38,27 @@ module.exports = class Repeater extends Decorator {
     /**
      * Open method.
      * @method open
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      **/
-    open(tick) {
-        tick.blackboard.set('i', 0, tick.tree.id, this.id);
+    open(context) {
+        context.blackboard.set('i', 0, context.tree.id, this.id);
     }
 
     /**
-     * Tick method.
-     * @method tick
-     * @param {Tick} tick A tick instance.
+     * Context method.
+     * @method run
+     * @param {Context} context A run instance.
      **/
-    tick(tick) {
+    run(context) {
         if (!this.child) {
             return ERROR;
         }
 
-        let i = tick.blackboard.get('i', tick.tree.id, this.id);
+        let i = context.blackboard.get('i', context.tree.id, this.id);
         let status = SUCCESS;
 
         if (this.maxLoop < 0 || i < this.maxLoop) {
-            status = this.child._execute(tick);
+            status = this.child.tick(context);
 
             if (status === SUCCESS || status === FAILURE) {
                 i++;
@@ -67,7 +67,7 @@ module.exports = class Repeater extends Decorator {
             return SUCCESS;
         }
 
-        tick.blackboard.set('i', i, tick.tree.id, this.id);
+        context.blackboard.set('i', i, context.tree.id, this.id);
         return status;
     }
 };

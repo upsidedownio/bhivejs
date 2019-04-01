@@ -11,7 +11,7 @@ test('Construct', t => {
 
 test('bar', async t => {
     // var tree = new BehaviorTree();
-    // var node = {'_execute': stub()};
+    // var node = {'_run': stub()};
     // var blackboard = getBlackboard();
     // var target = {}
     //
@@ -20,9 +20,9 @@ test('bar', async t => {
     //
     // tree.id = 'tree1';
     // tree.root = node;
-    // tree.tick(target, blackboard);
+    // tree.run(target, blackboard);
     //
-    // assert.isTrue(node._execute.calledOnce);
+    // assert.isTrue(node._run.calledOnce);
 
     let bt = new BehaviorTree();
 

@@ -1,26 +1,39 @@
 const Logger = require('../utils/Logger');
+
 /**
- * @typedef {object} TickLog
+ * @typedef {object} RunLog
  * @property {object} context
  * @property {NodeData} returnNode
  */
 
 /**
- * @class Tick
+ * @class Context
  **/
-module.exports = class Tick {
+class Context {
     /**
-     * Initialization method.
      * @constructor
-     **/
-    constructor({debug = false, blackboard = null, logger} = {}) {
-        this.tree = null;
+     * @param {BehaviorTree}    tree
+     * @param {Blackboard}      blackboard
+     * @param {object}         [opts]
+     * @param {boolean}        [opts.debug]
+     * @param {SYSLOG_LEVEL}   [opts.debug_level='emerg']
+     * @param {function}       [opts.logger]
+     * @param {SYSLOG_LEVEL}   [opts.log_level='warning']
+     */
+    constructor(tree, blackboard, {debug = false, debug_level = 'emerg', log_level = 'warning', logger} = {
+        debug: false,
+        debug_level: 'emerg',
+        log_level: 'warning',
+        logger: null
+    }) {
+        this.tree = tree;
         this.debug = debug;
-        this.debug_log = 'warn';
+        this.debug_level = debug_level;
+        this.log_level = log_level;
         this.target = null;
         /**
          * @type {Blackboard}
-         * @memberOf Tick
+         * @memberOf Context
          */
         this.blackboard = blackboard;
         this.activeNodes = [];
@@ -50,11 +63,11 @@ module.exports = class Tick {
     }
 
     /**
-     * @function tickNode
+     * @function runNode
      * @param {BaseNode} node The node that called this method.
      **/
-    tickNode(node) {
-        this.logger.debug('  '.repeat(this.activeNodes.length) + `TICK \t${node.name} - ${node.type} - ${node.id}`);
+    runNode(node) {
+        this.logger.debug('  '.repeat(this.activeNodes.length) + `RUN \t${node.name} - ${node.type} - ${node.id}`);
     }
 
     /**
@@ -73,4 +86,6 @@ module.exports = class Tick {
     exitNode(node) {
         this.logger.debug('  '.repeat(this.activeNodes.length) + `EXIT \t${node.name} - ${node.type} - ${node.id}`);
     }
-};
+}
+
+module.exports = Context;

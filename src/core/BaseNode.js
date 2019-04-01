@@ -67,42 +67,42 @@ module.exports = class BaseNode {
     }
 
     /**
-     * @method execute
+     * @method run
      * @memberOf BaseNode
-     * @param {Tick} tick A tick instance.
-     * @return {Constant} The tick state.
+     * @param {Context} context A run instance.
+     * @return {Constant} The run state.
      */
-    execute(tick) {
-        return this.execute(tick);
+    tick(context) {
+        return this._tick(context);
     }
 
     /**
-     * @method _execute
+     * @method _run
      * @memberOf BaseNode
-     * @param {Tick} tick A tick instance.
-     * @return {Constant} The tick state.
+     * @param {Context} context A run instance.
+     * @return {Constant} The run state.
      * @private
      **/
-    _execute(tick) {
+    _tick(context) {
         // ENTER
-        this._enter(tick);
+        this._enter(context);
 
         // OPEN
-        if (!tick.blackboard.get('isOpen', tick.tree.id, this.id)) {
-            this._open(tick);
+        if (!context.blackboard.get('isOpen', context.tree.id, this.id)) {
+            this._open(context);
         }
 
-        // TICK
-        const status = this._tick(tick);
-        tick.blackboard.set('lastStatus', status, tick.tree.id, this.id);
+        // RUN
+        const status = this._run(context);
+        context.blackboard.set('lastStatus', status, context.tree.id, this.id);
 
         // CLOSE
         if (status !== RUNNING) {
-            this._close(tick);
+            this._close(context);
         }
 
         // EXIT
-        this._exit(tick);
+        this._exit(context);
 
         return status;
     }
@@ -111,46 +111,46 @@ module.exports = class BaseNode {
      * Wrapper for enter method.
      * @method _enter
      * @memberOf BaseNode
-     * @param {Tick} tick   - A tick instance.
+     * @param {Context} context   - A run instance.
      * @private
      **/
-    _enter(tick) {
-        tick.enterNode(this);
-        this.enter(tick);
+    _enter(context) {
+        context.enterNode(this);
+        this.enter(context);
     }
 
     /**
      * Wrapper for open method.
      * @method _open
      * @memberOf BaseNode
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      * @private
      **/
-    _open(tick) {
-        tick.openNode(this);
-        tick.blackboard.set('isOpen', true, tick.tree.id, this.id);
-        tick.blackboard.set('status', RUNNING, tick.tree.id, this.id);
-        this.open(tick);
+    _open(context) {
+        context.openNode(this);
+        context.blackboard.set('isOpen', true, context.tree.id, this.id);
+        context.blackboard.set('status', RUNNING, context.tree.id, this.id);
+        this.open(context);
     }
 
     /**
-     * Wrapper for tick method.
-     * @method _tick
+     * Wrapper for run method.
+     * @method _run
      * @memberOf BaseNode
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      * @return {Constant} A state constant.
      * @private
      **/
-    _tick(tick) {
+    _run(context) {
         try {
-            tick.tickNode(this);
-            const result = this.tick(tick);
-            if (tick.debug) {
-                console.log(`tick result:\t${this.name}: ` + result);
+            context.runNode(this);
+            const result = this.run(context);
+            if (context.debug) {
+                console.log(`run() result:\t${this.name}: ` + result);
             }
             return result;
         } catch (e) {
-            console.error(`failed to execute tick on node [${this.type}] ${this.name}(${this.id})`);
+            console.error(`failed to execute run() on node [${this.type}] ${this.name}(${this.id})`);
             return ERROR;
         }
     }
@@ -158,69 +158,69 @@ module.exports = class BaseNode {
     /**
      * Wrapper for close method.
      * @method _close
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      * @private
      **/
-    _close(tick) {
-        tick.closeNode(this);
-        tick.blackboard.set('isOpen', false, tick.tree.id, this.id);
-        this.close(tick);
+    _close(context) {
+        context.closeNode(this);
+        context.blackboard.set('isOpen', false, context.tree.id, this.id);
+        this.close(context);
     }
 
     /**
      * Wrapper for exit method.
      * @method _exit
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      * @private
      **/
-    _exit(tick) {
-        tick.exitNode(this);
-        this.exit(tick);
+    _exit(context) {
+        context.exitNode(this);
+        this.exit(context);
     }
 
     /**
      * Enter method, override this to use. It is called every time a node is
-     * asked to execute, before the tick itself.
+     * asked to run, before the run itself.
      *
      * @method enter
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      **/
-    enter(tick) {
+    enter(context) {
     }
 
     /**
-     * Open method, override this to use. It is called only before the tick
+     * Open method, override this to use. It is called only before the run
      * callback and only if the not isn't closed.
      *
-     * Note: a node will be closed if it returned `RUNNING` in the tick.
+     * Note: a node will be closed if it returned `RUNNING` in the run.
      *
      * @method open
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      **/
-    open(tick) {
+    open(context) {
     }
 
     /**
-     * Tick method, override this to use. This method must contain the real
+     * Context method, override this to use. This method must contain the real
      * execution of node (perform a task, call children, etc.). It is called
-     * every time a node is asked to execute.
+     * every time a node is asked to run.
      *
-     * @method tick
-     * @param {Tick} tick A tick instance.
+     * @method run
+     * @param {Context} context A run instance.
      * @memberOf BaseNode
      **/
-    tick(tick) {
+    run(context) {
     }
 
     /**
-     * Close method, override this to use. This method is called after the tick
-     * callback, and only if the tick return a state different from
+     * Close method, override this to use. This method is called after the run
+     * callback, and only if the run return a state different from
      * `RUNNING`.
      *
      * @method close
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      **/
-    close(tick) {
+    close(context) {
     }
 
     /**
@@ -228,8 +228,8 @@ module.exports = class BaseNode {
      * execution.
      *
      * @method exit
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      **/
-    exit(tick) {
+    exit(context) {
     }
 };

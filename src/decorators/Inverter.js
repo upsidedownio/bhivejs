@@ -27,17 +27,17 @@ module.exports = class Inverter extends BaseDecorator {
     }
 
     /**
-     * Tick method.
-     * @method tick
-     * @param {Tick} tick A tick instance.
+     * Context method.
+     * @method run
+     * @param {Context} context A run instance.
      * @return {Constant} A state constant.
      **/
-    tick(tick) {
+    run(context) {
         if (!this.child) {
             return ERROR;
         }
 
-        let status = this.child.execute(tick);
+        let status = this.child.tick(context);
 
         if (status === SUCCESS) {
             status = FAILURE;

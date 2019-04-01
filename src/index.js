@@ -4,7 +4,7 @@ const BaseNode = require('./core/BaseNode');
 const BehaviorTree = require('./core/BehaviorTree');
 const Blackboard = require('./core/Blackboard');
 const BaseComposite = require('./core/BaseComposite');
-const Tick = require('./core/Tick');
+const Context = require('./core/Context');
 
 const decorators = require('./decorators');
 const composites = require('./composites');
@@ -17,7 +17,7 @@ module.exports = {
     AsyncTask,
     BehaviorTree,
     Blackboard,
-    Tick,
+    Context,
     constants,
     ...constants,
     composites,

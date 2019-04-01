@@ -55,44 +55,44 @@ module.exports = class AsyncTask extends BaseNode {
     }
 
     /**
-     * @method _tick
+     * @method _run
      * @override
-     * @param {Tick} tick A tick instance.
+     * @param {Context} context A run instance.
      * @return {Constant} A state constant.
      * @protected
      **/
-    _tick(tick) {
-        super._tick(tick);
+    _run(context) {
+        super._run(context);
         try {
-            const result = this.asyncTick(tick);
-            if (tick.debug) {
-                console.log(`tick result:\t${this.name}: ` + result);
+            const result = this.asyncRun(context);
+            if (context.debug) {
+                console.log(`run() result:\t${this.name}: ` + result);
             }
             return result;
         } catch (e) {
-            tick.logger.err(`failed to running AsyncAction: ${this.name}`, {err: e});
+            context.logger.err(`failed to running AsyncAction: ${this.name}`, {err: e});
             return FAILURE;
         }
     }
 
     /**
-     * @param {Tick} tick
+     * @param {Context} context
      * @returns {*}
      */
-    asyncTick(tick) {
-        const bb = tick.blackboard;
-        const l = tick.logger;
+    asyncRun(context) {
+        const bb = context.blackboard;
+        const l = context.logger;
 
-        if (bb.get('isCalled', tick.tree.id, this.id)) {
-            return bb.get('status', tick.tree.id, this.id);
+        if (bb.get('isCalled', context.tree.id, this.id)) {
+            return bb.get('status', context.tree.id, this.id);
         } else {
-            bb.set('isCalled', true, tick.tree.id, this.id);
+            bb.set('isCalled', true, context.tree.id, this.id);
         }
 
         this.updateTimeout();
-        this.run(tick)
+        this.run(context)
             .then((result) => {
-                let status = bb.get('status', tick.tree.id, this.id);
+                let status = bb.get('status', context.tree.id, this.id);
 
                 if (status !== RUNNING) {
                     console.log('run() resolved after timeout, the result gonna ignored');
@@ -102,7 +102,7 @@ module.exports = class AsyncTask extends BaseNode {
                 if (result === SUCCESS || result === FAILURE) {
                     status = result;
                 } else {
-                    l.warn('tick() of AsyncAction should return SUCCESS or FAILURE only');
+                    l.warn('run() of AsyncAction should return SUCCESS or FAILURE only');
                     status = ERROR;
                 }
 
@@ -111,10 +111,10 @@ module.exports = class AsyncTask extends BaseNode {
                 } else {
                     l.i(`AsyncAction ${this.type} ${this.name} has resolved with result ` + result);
                 }
-                bb.set('status', status, tick.tree.id, this.id);
+                bb.set('status', status, context.tree.id, this.id);
             })
             .catch((err) => {
-                let status = bb.get('status', tick.tree.id, this.id);
+                let status = bb.get('status', context.tree.id, this.id);
 
                 if (status !== RUNNING) {
                     l.warn('run() resolved after timeout, the result gonna ignored');
@@ -126,12 +126,12 @@ module.exports = class AsyncTask extends BaseNode {
                     message: _.get(err, 'message')
                 });
 
-                bb.set('status', status, tick.tree.id, this.id);
+                bb.set('status', status, context.tree.id, this.id);
             });
-        return bb.get('status', tick.tree.id, this.id);
+        return bb.get('status', context.tree.id, this.id);
     }
 
-    close(tick) {
-        tick.blackboard.set('isCalled', false, tick.tree.id, this.id);
+    close(context) {
+        context.blackboard.set('isCalled', false, context.tree.id, this.id);
     }
 };

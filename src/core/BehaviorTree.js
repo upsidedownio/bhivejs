@@ -1,42 +1,72 @@
 const _ = require('lodash');
 const uuid = require('uuid/v4');
-const Tick = require('./Tick');
+const Context = require('./Context');
+const Blackboard = require('./Blackboard');
 
 /**
  * @class BehaviorTree
  **/
-module.exports = class BehaviorTree {
+class BehaviorTree {
 
     /**
      * @constructor
+     * @param {BaseNode}  rootNode
+     * @param {Object}     [opts]
+     * @param {Logger}     [opts.logger]
+     * @param {Object}     [opts.properties]
      **/
-    constructor() {
+    constructor(rootNode, {logger, properties} = {}) {
+        /**
+         * @type {string}
+         * @member
+         */
         this.id = uuid();
+        /**
+         * @type {Object}
+         * @member
+         */
         this.name = 'The behavior tree';
+        /**
+         * @type {Object}
+         * @member
+         */
         this.description = 'Default description';
-        this.properties = {};
-        this.root = null;
+        /**
+         * @type {Object}
+         * @member
+         */
+        this.properties = properties || {};
+        /**
+         * @type {BaseNode}
+         * @member
+         */
+        this.root = rootNode;
+        /**
+         * @type {Boolean}
+         * @member
+         */
         this.debug = null;
     }
 
     /**
      * @param {Blackboard}  blackboard  - An instance of blackboard object.
      * @param {Object}      target      - A target object.
-     * @return {Constant} The tick signal state.
+     * @return {Constant} The run signal state.
      **/
     tick(blackboard, target) {
-        /* CREATE A TICK OBJECT */
-        const tick = new Tick();
-        tick.debug = this.debug;
-        tick.target = target;
-        tick.blackboard = blackboard;
-        tick.tree = this;
+        const context = new Context(this);
+        context.debug = this.debug;
+        context.target = target;
+        context.blackboard = blackboard;
+        context.tree = this;
 
         /* TICK NODE */
-        const state = this.root._execute(tick);
+        const state = this.root.tick(context);
 
-        blackboard.tree(this.id).set('activeNodes', tick.activeNodes);
+        blackboard.tree(this.id).set('activeNodes', context.activeNodes);
 
         return state;
     }
-};
+}
+
+module.exports = BehaviorTree;

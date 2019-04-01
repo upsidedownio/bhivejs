@@ -1,4 +1,11 @@
 const _ = require('lodash');
+
+/**
+ * Default Log levels - syslog
+ * @see RFC 5424: https://www.rfc-editor.org/info/rfc5424
+ * @typedef {'emerg'|'alert'|'crit'|'err'|'warning'|'notice'|'info'|'debug'} SYSLOG_LEVEL
+ */
+
 /**
  * Default logger
  * @param tick
@@ -8,8 +15,10 @@ const _ = require('lodash');
  */
 
 /**
- * Default Log levels - syslog
- * @see RFC 5424: https://www.rfc-editor.org/info/rfc5424
+ * @typedef {function} Logger
+ */
+
+/**
  */
 const severities = {
     emerg: 1,
@@ -27,13 +36,13 @@ const severities = {
  */
 class Logger {
     /**
-     * @param {Tick|{debug: boolean, debug_log: string}} tick
-     * @param log
+     * @param {Context|{debug: boolean, debug_level: string}} context
+     * @param {Logger} logger
      */
-    constructor(tick, log) {
-        this.tick = tick;
-        if (log) {
-            this._log = log;
+    constructor(context, logger) {
+        this.context = context;
+        if (logger) {
+            this._log = logger;
         }
 
         for (const level in severities) {
@@ -47,19 +56,19 @@ class Logger {
         this._log = logger;
     }
 
-    checkLogLevel(tick, level) {
-        const level_tick = _.get(severities, _.get(this.tick, 'debug_log')) || severities['warning'];
+    checkLogLevel(context, level) {
+        const level_debug = _.get(severities, _.get(this.context, 'debug_level')) || severities['warning'];
         const level_log = _.get(severities, level) || _.get(severities, 'emerg');
 
         if (!_.get(severities, level)) {
             console.warn('invalid log level ' + level, console.trace());
         }
 
-        return (tick.debug && (level_log <= level_tick));
+        return (context.debug && (level_log <= level_debug));
     }
 
     log(level, message, extra) {
-        if (this.checkLogLevel(this.tick, level)) {
+        if (this.checkLogLevel(this.context, level)) {
             return this._log(level, message, extra)
         }
     }
@@ -72,7 +81,7 @@ class Logger {
      */
     _log(level, message, extra) {
         let msg = `${level}: ${message}`;
-        if(extra){
+        if (extra) {
             msg += `\n${JSON.stringify(extra, null, 4)}`;
         }
         switch (level) {

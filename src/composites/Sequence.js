@@ -22,25 +22,25 @@ module.exports = class Sequence extends BaseComposite {
 
     /**
      * @function open
-     * @param {Tick} tick
+     * @param {Context} context
      **/
-    open(tick) {
-        tick.blackboard.set('runningChild', 0, tick.tree.id, this.id);
+    open(context) {
+        context.blackboard.set('runningChild', 0, context.tree.id, this.id);
     }
 
     /**
-     * @function tick
-     * @param {Tick} tick
+     * @function run
+     * @param {Context} context
      * @return {Constant}
      **/
-    tick(tick) {
-        const child = tick.blackboard.get('runningChild', tick.tree.id, this.id);
+    run(context) {
+        const child = context.blackboard.get('runningChild', context.tree.id, this.id);
         for (let i = child; i < this.children.length; i++) {
-            const status = this.children[i]._execute(tick);
+            const status = this.children[i].tick(context);
 
             if (status !== SUCCESS) {
                 if (status === RUNNING) {
-                    tick.blackboard.set('runningChild', i, tick.tree.id, this.id);
+                    context.blackboard.set('runningChild', i, context.tree.id, this.id);
                 }
                 return status;
             }

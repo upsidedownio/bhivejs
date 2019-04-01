@@ -11,14 +11,14 @@ module.exports = class Task extends BaseNode {
      * @param {Object} [options.properties]
      * @memberOf Task
      */
-    constructor({type = 'Task', name, tick, properties} = {}) {
+    constructor({type = 'Task', name, run, properties} = {}) {
         super({
             category: TASK,
             type: type,
             name,
             properties
         });
-        this.tick = tick;
+        this.run = run;
     }
 
 };
