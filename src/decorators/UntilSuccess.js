@@ -59,7 +59,7 @@ module.exports = class UntilSuccess extends Decorator {
                 // end condition
                 return SUCCESS;
             } else {
-                context.target.logger.e('UNKNOWN child status under repeatUntilSuccess :' + childStatus);
+                context.logger.DEBUG_err('UNKNOWN child status under repeatUntilSuccess :' + childStatus);
                 return ERROR;
             }
 

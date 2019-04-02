@@ -12,79 +12,92 @@ const Logger = require('../utils/Logger');
 class Context {
     /**
      * @constructor
-     * @param {BehaviorTree}    tree
-     * @param {Blackboard}      blackboard
-     * @param {object}         [opts]
-     * @param {boolean}        [opts.debug]
-     * @param {SYSLOG_LEVEL}   [opts.debug_level='emerg']
-     * @param {function}       [opts.logger]
-     * @param {SYSLOG_LEVEL}   [opts.log_level='warning']
+     * @param {BehaviorTree}        tree
+     * @param {Blackboard}          blackboard
+     * @param {BehaviorTreeOptions}[options]
      */
-    constructor(tree, blackboard, {debug = false, debug_level = 'emerg', log_level = 'warning', logger} = {
-        debug: false,
-        debug_level: 'emerg',
-        log_level: 'warning',
-        logger: null
-    }) {
+    constructor(tree, blackboard, options = {}) {
+        /**
+         * @type {BehaviorTree}
+         * @member Context
+         */
         this.tree = tree;
-        this.debug = debug;
-        this.debug_level = debug_level;
-        this.log_level = log_level;
-        this.target = null;
         /**
          * @type {Blackboard}
-         * @memberOf Context
+         * @member Context
          */
-        this.blackboard = blackboard;
+        this._blackboard = blackboard;
+        /**
+         * @type {BehaviorTreeOptions}
+         * @member Context
+         */
+        this.options = options;
+        /**
+         * @type {BaseNode[]}
+         * @member Context
+         */
         this.activeNodes = [];
         /**
          * @type {Logger}
+         * @member Context
          */
-        this.logger = new Logger(this, logger);
+        this.logger = new Logger(this, this.options.logger);
+    }
+
+    get blackboard() {
+        return this._blackboard;
+    }
+
+    set blackboard(bb) {
+        this._blackboard = bb;
     }
 
     /**
-     * Called when entering a node (called by BaseNode).
      * @function enterNode
-     * @param {BaseNode} node The node that called this method.
+     * @memberOf Context
+     * @param {BaseNode} node   - caller node
      **/
     enterNode(node) {
-        this.logger.debug('  '.repeat(this.activeNodes.length) + `ENTER \t${node.name} - ${node.type} - ${node.id}`);
+        this.logger.DEBUG_debug('  '.repeat(this.activeNodes.length) + `ENTER \t${node.name} - ${node.type} - ${node.id}`);
     }
 
     /**
      * @function openNode
-     * @param {BaseNode} node The node that called this method.
+     * @memberOf Context
+     * @param {BaseNode} node   - caller node
      **/
     openNode(node) {
         this.activeNodes.length++;
         this.activeNodes.push(node);
-        this.logger.debug('  '.repeat(this.activeNodes.length) + `OPEN \t${node.name} - ${node.type} - ${node.id}`);
+        this.logger.DEBUG_debug('  '.repeat(this.activeNodes.length) + `OPEN \t${node.name} - ${node.type} - ${node.id}`);
     }
 
     /**
      * @function runNode
-     * @param {BaseNode} node The node that called this method.
+     * @memberOf Context
+     * @param {BaseNode} node   - caller node
      **/
     runNode(node) {
-        this.logger.debug('  '.repeat(this.activeNodes.length) + `RUN \t${node.name} - ${node.type} - ${node.id}`);
+        this.logger.DEBUG_debug('  '.repeat(this.activeNodes.length) + `RUN \t${node.name} - ${node.type} - ${node.id}`);
     }
 
     /**
      * @function closeNode
-     * @param {BaseNode} node The node that called this method.
+     * @memberOf Context
+     * @param {BaseNode} node   - caller node
      **/
     closeNode(node) {
-        this.logger.debug('  '.repeat(this.activeNodes.length) + `CLOSE \t${node.name} - ${node.type} - ${node.id}`);
+        this.logger.DEBUG_debug('  '.repeat(this.activeNodes.length) + `CLOSE \t${node.name} - ${node.type} - ${node.id}`);
         this.activeNodes.pop();
     }
 
     /**
      * @function exitNode
-     * @param {BaseNode} node The node that called this method.
+     * @memberOf Context
+     * @param {BaseNode} node   - caller node
      **/
     exitNode(node) {
-        this.logger.debug('  '.repeat(this.activeNodes.length) + `EXIT \t${node.name} - ${node.type} - ${node.id}`);
+        this.logger.DEBUG_debug('  '.repeat(this.activeNodes.length) + `EXIT \t${node.name} - ${node.type} - ${node.id}`);
     }
 }
 

@@ -17,7 +17,7 @@ const {RUNNING, ERROR} = require('../constants');
 /**
  * @class BaseNode
  **/
-module.exports = class BaseNode {
+class BaseNode {
 
     /**
      * @constructor
@@ -81,7 +81,7 @@ module.exports = class BaseNode {
      * @memberOf BaseNode
      * @param {Context} context A run instance.
      * @return {Constant} The run state.
-     * @private
+     * @protected
      **/
     _tick(context) {
         // ENTER
@@ -112,7 +112,7 @@ module.exports = class BaseNode {
      * @method _enter
      * @memberOf BaseNode
      * @param {Context} context   - A run instance.
-     * @private
+     * @protected
      **/
     _enter(context) {
         context.enterNode(this);
@@ -123,8 +123,8 @@ module.exports = class BaseNode {
      * Wrapper for open method.
      * @method _open
      * @memberOf BaseNode
-     * @param {Context} context A run instance.
-     * @private
+     * @param {Context} context     - A run instance.
+     * @protected
      **/
     _open(context) {
         context.openNode(this);
@@ -139,18 +139,18 @@ module.exports = class BaseNode {
      * @memberOf BaseNode
      * @param {Context} context A run instance.
      * @return {Constant} A state constant.
-     * @private
+     * @protected
      **/
     _run(context) {
         try {
             context.runNode(this);
             const result = this.run(context);
-            if (context.debug) {
-                console.log(`run() result:\t${this.name}: ` + result);
-            }
+            context.logger.DEBUG_debug(`run() result:\t${this.name}: ` + result);
             return result;
         } catch (e) {
-            console.error(`failed to execute run() on node [${this.type}] ${this.name}(${this.id})`);
+            context.logger.DEBUG_err(
+                `failed to execute run() on node [${this.type}] ${this.name}(${this.id})\n`
+                + `${e.message}\n${e.stack}`);
             return ERROR;
         }
     }
@@ -159,7 +159,7 @@ module.exports = class BaseNode {
      * Wrapper for close method.
      * @method _close
      * @param {Context} context A run instance.
-     * @private
+     * @protected
      **/
     _close(context) {
         context.closeNode(this);
@@ -171,7 +171,7 @@ module.exports = class BaseNode {
      * Wrapper for exit method.
      * @method _exit
      * @param {Context} context A run instance.
-     * @private
+     * @protected
      **/
     _exit(context) {
         context.exitNode(this);
@@ -232,4 +232,6 @@ module.exports = class BaseNode {
      **/
     exit(context) {
     }
-};
+}
+
+module.exports = BaseNode;

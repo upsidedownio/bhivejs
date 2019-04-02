@@ -27,6 +27,13 @@ class Board {
     }
 
     /**
+     * @param {string} key
+     */
+    clear(key) {
+        delete this.board[key];
+    }
+
+    /**
      * check board is empty or not
      * @returns {boolean}
      */
@@ -89,8 +96,8 @@ class TreeBoard extends Board {
         return true;
     }
 
-    removeNode(nodeId) {
-        delete this._nodes[nodeId];
+    removeNode(node) {
+        delete this._nodes[node.id || node];
     }
 
     gc() {
@@ -144,17 +151,17 @@ module.exports = class Blackboard {
 
     /**
      * Get tree board by treeId
-     * @param {string}   treeId             - tree id
-     * @param {object}   opts               - options
-     * @param {boolean} [opts.safe=true]    - if flag enabled, generate empty tree board when cannot find tree board
+     * @param {BaseNode|string} tree             - tree id
+     * @param {object}          opts               - options
+     * @param {boolean}        [opts.safe=true]    - if flag enabled, generate empty tree board when cannot find tree board
      * @returns {Board}
      */
-    tree(treeId, {safe = true} = {safe: true}) {
-        const treeBoard = _.get(this._trees, treeId);
+    tree(tree, {safe = true} = {safe: true}) {
+        const treeBoard = _.get(this._trees, tree.id || tree);
         if (!treeBoard && safe) {
-            _.set(this._trees, treeId, new TreeBoard());
+            _.set(this._trees, tree.id || tree, new TreeBoard());
         }
-        return _.get(this._trees, treeId);
+        return _.get(this._trees, tree.id || tree);
     }
 
     /**
@@ -165,12 +172,12 @@ module.exports = class Blackboard {
     }
 
     /**
-     * @param {string}  treeId
-     * @param {string}  nodeId
+     * @param {BaseNode|string}  tree
+     * @param {BaseNode|string}  node
      * @returns {TreeBoard}
      */
-    node(treeId, nodeId) {
-        return this.tree(treeId).node(nodeId);
+    node(tree, node) {
+        return this.tree(tree.id || tree).node(node.id || node);
     }
 
     /**
@@ -196,12 +203,12 @@ module.exports = class Blackboard {
     set(key, value, treeId, nodeId) {
         let targetBoard = this._shared;
         if (nodeId) {
-            l.warning('Blackboard.set(key, value, treeId, nodeId) is deprecated.' +
-                ' use Blackboard.tree(treeId).node(nodeId).set(key, value) instead');
+            // l.warning('Blackboard.set(key, value, treeId, nodeId) is deprecated.' +
+            //     ' use Blackboard.tree(treeId).node(nodeId).set(key, value) instead\n' + new Error().stack);
             targetBoard = this.tree(treeId).node(nodeId);
         } else if (treeId) {
-            l.warning('Blackboard.set(key, value, treeId) is deprecated.' +
-                ' use Blackboard.tree(treeId).set(key, value) instead');
+            // l.warning('Blackboard.set(key, value, treeId) is deprecated.' +
+            //     ' use Blackboard.tree(treeId).set(key, value) instead\n' + new Error().stack);
             targetBoard = this.tree(treeId);
         }
 
@@ -218,12 +225,12 @@ module.exports = class Blackboard {
     get(key, treeId, nodeId) {
         let targetBoard = this._shared;
         if (nodeId) {
-            l.warning('Blackboard.get(key, treeId, nodeId) is deprecated.' +
-                ' use Blackboard.tree(treeId).node(nodeId).get(key) instead');
+            // l.warning('Blackboard.get(key, treeId, nodeId) is deprecated.' +
+            //     ' use Blackboard.tree(treeId).node(nodeId).get(key) instead\n' + new Error().stack);
             targetBoard = this.tree(treeId).node(nodeId);
         } else if (treeId) {
-            l.warning('Blackboard.get(key, treeId) is deprecated.' +
-                ' use Blackboard.tree(treeId).get(key) instead');
+            // l.warning('Blackboard.get(key, treeId) is deprecated.' +
+            //     ' use Blackboard.tree(treeId).get(key) instead\n' + new Error().stack);
             targetBoard = this.tree(treeId);
         }
 

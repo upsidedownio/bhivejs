@@ -21,6 +21,7 @@ module.exports = class Priority extends BaseComposite {
     }
 
     /**
+     * @override
      * @function open
      * @param {Context} context
      **/

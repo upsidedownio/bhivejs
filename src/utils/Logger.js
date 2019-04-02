@@ -1,4 +1,11 @@
 const _ = require('lodash');
+const {defaultBehaviorTreeOptions} = require('../constants');
+
+/**
+ * There are two types of logger
+ * 1. logger for logging debug messages in this library
+ * 2. logger for logging customizable user log
+ */
 
 /**
  * Default Log levels - syslog
@@ -15,7 +22,7 @@ const _ = require('lodash');
  */
 
 /**
- * @typedef {function} Logger
+ * @typedef {function} LogFunction
  */
 
 /**
@@ -37,26 +44,43 @@ const severities = {
 class Logger {
     /**
      * @param {Context|{debug: boolean, debug_level: string}} context
-     * @param {Logger} logger
+     * @param {LogFunction} logger
      */
     constructor(context, logger) {
         this.context = context;
-        if (logger) {
-            this._log = logger;
-        }
+        this.options = _.defaults(context.options, defaultBehaviorTreeOptions);
 
-        for (const level in severities) {
-            this[level] = function (message, extra) {
-                return this.log(level, message, extra)
-            }
-        }
+        this._log = logger || this.default_logger;
+        this._debugLog = this.options.debug && this.options.customLoggerForDebug ? logger || this.default_logger : this.default_logger;
+
+        // expends log
+        // for (const level in severities) {
+        //     this[level] = function (message, extra) {
+        //         return this.log(level, message, extra)
+        //     };
+        //     this['DEBUG_' + level] = function (message, extra) {
+        //         return this.debugLog(level, message, extra);
+        //     };
+        // }
+    }
+
+    get logger() {
+        return this._log;
     }
 
     set logger(logger) {
         this._log = logger;
     }
 
-    checkLogLevel(context, level) {
+    get debugLogger() {
+        return this._debugLog;
+    }
+
+    set debugLogger(dlogger) {
+        this._debugLog = dlogger;
+    }
+
+    checkDebugLogLevel(context, level) {
         const level_debug = _.get(severities, _.get(this.context, 'debug_level')) || severities['warning'];
         const level_log = _.get(severities, level) || _.get(severities, 'emerg');
 
@@ -67,10 +91,14 @@ class Logger {
         return (context.debug && (level_log <= level_debug));
     }
 
-    log(level, message, extra) {
-        if (this.checkLogLevel(this.context, level)) {
-            return this._log(level, message, extra)
+    debugLog(level, message, extra) {
+        if (this.checkDebugLogLevel(this.context, level)) {
+            return this._debugLog(level, message, extra)
         }
+    }
+
+    log(level, message, extra) {
+        return this._log(level, message, extra);
     }
 
     /**
@@ -79,7 +107,7 @@ class Logger {
      * @param {object} [extra]
      * @private
      */
-    _log(level, message, extra) {
+    default_logger(level, message, extra) {
         let msg = `${level}: ${message}`;
         if (extra) {
             msg += `\n${JSON.stringify(extra, null, 4)}`;
@@ -101,76 +129,69 @@ class Logger {
         }
     }
 
-    /**
-     * @param {string} [message]
-     * @param {*} [extra]
-     * @returns {*}
-     */
     debug(message, extra) {
         this.log('debug', message, extra);
     }
 
-    /**
-     * @param {string} [message]
-     * @param {*} [extra]
-     * @returns {*}
-     */
     info(message, extra) {
         this.log('info', message, extra);
     }
 
-    /**
-     * @param {string} [message]
-     * @param {*} [extra]
-     * @returns {*}
-     */
     notice(message, extra) {
         this.log('notice', message, extra);
     }
 
-    /**
-     * @param {string} [message]
-     * @param {*} [extra]
-     * @returns {*}
-     */
     warning(message, extra) {
         this.log('warning', message, extra);
     }
 
-    /**
-     * @param {string} [message]
-     * @param {*} [extra]
-     * @returns {*}
-     */
     err(message, extra) {
         this.log('err', message, extra);
     }
 
-    /**
-     * @param {string} [message]
-     * @param {*} [extra]
-     * @returns {*}
-     */
     crit(message, extra) {
         this.log('crit', message, extra);
     }
 
-    /**
-     * @param {string} [message]
-     * @param {*} [extra]
-     * @returns {*}
-     */
     alert(message, extra) {
         this.log('alert', message, extra);
     }
 
-    /**
-     * @param {string} [message]
-     * @param {*} [extra]
-     * @returns {*}
-     */
     emerg(message, extra) {
         this.log('emerg', message, extra);
+    }
+
+    // debug logger
+    DEBUG_debug(message, extra) {
+        this.debugLog('debug', message, extra);
+    }
+
+    DEBUG_info(message, extra) {
+        this.debugLog('info', message, extra);
+    }
+
+    DEBUG_notice(message, extra) {
+        this.debugLog('notice', message, extra);
+    }
+
+    DEBUG_warning(message, extra) {
+        this.debugLog('warning', message, extra);
+    }
+
+    DEBUG_err(message, extra) {
+        this.debugLog('err', message, extra);
+    }
+
+    DEBUG_crit(message, extra) {
+        this.debugLog('crit', message, extra);
+    }
+
+    DEBUG_alert(message, extra) {
+        this.debugLog('alert', message, extra);
+    }
+
+    DEBUG_emerg(message, extra) {
+        this.debugLog('emerg', message, extra);
     }
 }
 

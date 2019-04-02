@@ -12,15 +12,15 @@ test('Construct', t => {
 test('bar', async t => {
     // var tree = new BehaviorTree();
     // var node = {'_run': stub()};
-    // var blackboard = getBlackboard();
+    // var _blackboard = getBlackboard();
     // var target = {}
     //
-    // blackboard.get.withArgs('openNodes', 'tree1')
+    // _blackboard.get.withArgs('openNodes', 'tree1')
     //     .returns([]);
     //
     // tree.id = 'tree1';
     // tree.root = node;
-    // tree.run(target, blackboard);
+    // tree.run(target, _blackboard);
     //
     // assert.isTrue(node._run.calledOnce);
 

@@ -8,7 +8,7 @@ const {DECORATOR} = require('../constants');
 module.exports = class BaseDecorator extends BaseNode {
     /** @member {BaseNode} child
 
-    /**
+     /**
      * Creates an instance of Decorator.
      * @constructor
      * @param {Object} opts

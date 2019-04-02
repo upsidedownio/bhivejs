@@ -13,6 +13,26 @@ const ERROR = 'ERROR';
  * @typedef {string} Constant
  */
 
+
+/**
+ * @typedef {Object} BehaviorTreeOptions
+ * @property {boolean}     [debug]
+ * @property {SYSLOG_LEVEL}[debug_level]
+ * @property {LogFunction} [logger]
+ * @property {SYSLOG_LEVEL}[log_level]
+ */
+
+/**
+ * @type {BehaviorTreeOptions}
+ */
+const defaultBehaviorTreeOptions = {
+    debug: false,
+    debug_level: 'emerg',
+    logger: null,
+    log_level: 'warning',
+    customLoggerForDebug: false
+};
+
 /**
  * @type {Array<Constant>}
  */
@@ -23,5 +43,6 @@ module.exports = {
     ERROR,
     COMPOSITE,
     DECORATOR,
-    TASK
+    TASK,
+    defaultBehaviorTreeOptions
 };
