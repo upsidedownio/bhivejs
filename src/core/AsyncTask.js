@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const BaseNode = require('../core/BaseNode');
 const {TASK, RUNNING, ERROR} = require('../constants');
 
@@ -34,15 +33,15 @@ module.exports = class AsyncTask extends BaseNode {
     open(context) {
         super.open(context);
         const nodeBoard = context.blackboard.tree(context.tree).node(this);
-        nodeBoard.set('status', RUNNING);
+        nodeBoard.set('asyncStatus', RUNNING);
         this.run(context)
             .then((result) => {
-                nodeBoard.set('status', result);
+                nodeBoard.set('asyncStatus', result);
             })
             .catch((err) => {
                 context.logger.err(`Failed to running AsyncTask ${this.name}` +
                     `\n${err.message}\n${err.stack}`);
-                nodeBoard.set('status', ERROR);
+                nodeBoard.set('asyncStatus', ERROR);
             })
     }
 
@@ -55,12 +54,12 @@ module.exports = class AsyncTask extends BaseNode {
      **/
     _run(context) {
         const nodeBoard = context.blackboard.tree(context.tree).node(this);
-        return nodeBoard.get('status');
+        return nodeBoard.get('asyncStatus');
     }
 
     close(context) {
         const nodeBoard = context.blackboard.tree(context.tree).node(this);
-        context.logger.debug(`success asyncTask:${this.name} with status`, nodeBoard.get('status'));
-        nodeBoard.clear('status');
+        context.logger.debug(`success asyncTask:${this.name} with status`, nodeBoard.get('asyncStatus'));
+        nodeBoard.clear('asyncStatus');
     }
 };

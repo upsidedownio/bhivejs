@@ -88,13 +88,13 @@ class BaseNode {
         this._enter(context);
 
         // OPEN
-        if (!context.blackboard.get('isOpen', context.tree.id, this.id)) {
+        if (!context.blackboard.tree(context.tree).node(this).get('isOpen')) {
             this._open(context);
         }
 
         // RUN
         const status = this._run(context);
-        context.blackboard.set('lastStatus', status, context.tree.id, this.id);
+        context.blackboard.tree(context.tree).node(this).set('lastStatus', status);
 
         // CLOSE
         if (status !== RUNNING) {
@@ -128,8 +128,7 @@ class BaseNode {
      **/
     _open(context) {
         context.openNode(this);
-        context.blackboard.set('isOpen', true, context.tree.id, this.id);
-        context.blackboard.set('status', RUNNING, context.tree.id, this.id);
+        context.blackboard.tree(context.tree).node(this).set('isOpen', true);
         this.open(context);
     }
 
@@ -163,7 +162,7 @@ class BaseNode {
      **/
     _close(context) {
         context.closeNode(this);
-        context.blackboard.set('isOpen', false, context.tree.id, this.id);
+        context.blackboard.tree(context.tree.id).node(this.id).set('isOpen', false);
         this.close(context);
     }
 

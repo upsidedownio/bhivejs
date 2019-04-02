@@ -41,7 +41,7 @@ module.exports = class Repeater extends Decorator {
      * @param {Context} context A run instance.
      **/
     open(context) {
-        context.blackboard.set('i', 0, context.tree.id, this.id);
+        context.blackboard.tree(context.tree.id).node(this.id).set('i', 0);
     }
 
     /**
@@ -54,7 +54,7 @@ module.exports = class Repeater extends Decorator {
             return ERROR;
         }
 
-        let i = context.blackboard.get('i', context.tree.id, this.id);
+        let i = context.blackboard.tree(context.tree.id).node(this.id).get('i');
         let status = SUCCESS;
 
         if (this.maxLoop < 0 || i < this.maxLoop) {
@@ -67,7 +67,7 @@ module.exports = class Repeater extends Decorator {
             return SUCCESS;
         }
 
-        context.blackboard.set('i', i, context.tree.id, this.id);
+        context.blackboard.tree(context.tree.id).node(this.id).set('i', i);
         return status;
     }
 };

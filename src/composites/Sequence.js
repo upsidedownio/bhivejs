@@ -21,26 +21,29 @@ module.exports = class Sequence extends BaseComposite {
     }
 
     /**
+     * @override
      * @function open
      * @param {Context} context
      **/
     open(context) {
-        context.blackboard.set('runningChild', 0, context.tree.id, this.id);
+        context.blackboard.tree(context.tree.id).node(this.id).set('runningChild', 0);
     }
 
     /**
+     * @override
      * @function run
      * @param {Context} context
      * @return {Constant}
      **/
     run(context) {
-        const child = context.blackboard.get('runningChild', context.tree.id, this.id);
+        const nodeBoard = context.blackboard.tree(context.tree.id).node(this.id);
+        const child = nodeBoard.get('runningChild');
         for (let i = child; i < this.children.length; i++) {
             const status = this.children[i].tick(context);
 
             if (status !== SUCCESS) {
                 if (status === RUNNING) {
-                    context.blackboard.set('runningChild', i, context.tree.id, this.id);
+                    nodeBoard.set('runningChild', i);
                 }
                 return status;
             }

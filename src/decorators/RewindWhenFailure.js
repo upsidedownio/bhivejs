@@ -36,7 +36,7 @@ module.exports = class Inverter extends BaseDecorator {
         let status = this.child.tick(context);
 
         if (status === FAILURE) {
-            context.blackboard.set('runningChild', 0, context.tree.id, this.child.id);
+            context.blackboard.tree(context.tree.id).node(this.child.id).set('runningChild', 0);
         }
 
         return status;
