@@ -203,12 +203,12 @@ module.exports = class Blackboard {
     set(key, value, treeId, nodeId) {
         let targetBoard = this._shared;
         if (nodeId) {
-            // l.warning('Blackboard.set(key, value, treeId, nodeId) is deprecated.' +
-            //     ' use Blackboard.tree(treeId).node(nodeId).set(key, value) instead\n' + new Error().stack);
+            l.warning('Blackboard.set(key, value, treeId, nodeId) is deprecated.' +
+                ' use Blackboard.tree(treeId).node(nodeId).set(key, value) instead\n' + new Error().stack);
             targetBoard = this.tree(treeId).node(nodeId);
         } else if (treeId) {
-            // l.warning('Blackboard.set(key, value, treeId) is deprecated.' +
-            //     ' use Blackboard.tree(treeId).set(key, value) instead\n' + new Error().stack);
+            l.warning('Blackboard.set(key, value, treeId) is deprecated.' +
+                ' use Blackboard.tree(treeId).set(key, value) instead\n' + new Error().stack);
             targetBoard = this.tree(treeId);
         }
 
@@ -225,12 +225,12 @@ module.exports = class Blackboard {
     get(key, treeId, nodeId) {
         let targetBoard = this._shared;
         if (nodeId) {
-            // l.warning('Blackboard.get(key, treeId, nodeId) is deprecated.' +
-            //     ' use Blackboard.tree(treeId).node(nodeId).get(key) instead\n' + new Error().stack);
+            l.warning('Blackboard.get(key, treeId, nodeId) is deprecated.' +
+                ' use Blackboard.tree(treeId).node(nodeId).get(key) instead\n' + new Error().stack);
             targetBoard = this.tree(treeId).node(nodeId);
         } else if (treeId) {
-            // l.warning('Blackboard.get(key, treeId) is deprecated.' +
-            //     ' use Blackboard.tree(treeId).get(key) instead\n' + new Error().stack);
+            l.warning('Blackboard.get(key, treeId) is deprecated.' +
+                ' use Blackboard.tree(treeId).get(key) instead\n' + new Error().stack);
             targetBoard = this.tree(treeId);
         }
 
