@@ -1,6 +1,6 @@
 {
   "name": "bhive",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Behavior Tree for Javascript",
   "main": "src/index.js",
   "repository": {
