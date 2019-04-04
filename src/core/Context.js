@@ -67,7 +67,6 @@ class Context {
      * @param {BaseNode} node   - caller node
      **/
     openNode(node) {
-        this.activeNodes.length++;
         this.activeNodes.push(node);
         this.logger.DEBUG_debug('  '.repeat(this.activeNodes.length) + `OPEN \t${node.name} - ${node.type} - ${node.id}`);
     }
