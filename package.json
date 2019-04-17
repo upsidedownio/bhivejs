@@ -1,11 +1,11 @@
 {
   "name": "bhive",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Behavior Tree for Javascript",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/upsidedownio/bhive"
+    "url": "git://github.com/upsidedownio/bhivejs"
   },
   "keywords": [
     "behavior",
