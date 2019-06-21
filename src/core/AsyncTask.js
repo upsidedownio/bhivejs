@@ -59,7 +59,7 @@ module.exports = class AsyncTask extends BaseNode {
 
     close(context) {
         const nodeBoard = context.blackboard.tree(context.tree).node(this);
-        context.logger.debug(`success asyncTask:${this.name} with status`, nodeBoard.get('asyncStatus'));
+        context.logger.debug(`success asyncTask:${this.name} with status: ` + nodeBoard.get('asyncStatus'));
         nodeBoard.clear('asyncStatus');
     }
 };
