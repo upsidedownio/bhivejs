@@ -32,15 +32,15 @@
     "doc:serve": "lite-server -c doc/bs-config.doc.json"
   },
   "devDependencies": {
-    "ava": "^1.4.1",
+    "ava": "^2.2.0",
     "better-docs": "^1.1.6",
-    "eslint": "^5.16.0",
-    "eslint-plugin-jsdoc": "^10.1.0",
-    "jsdoc": "^3.6.2",
+    "eslint": "^6.0.1",
+    "eslint-plugin-jsdoc": "^15.5.1",
+    "jsdoc": "^3.6.3",
     "lite-server": "^2.5.3"
   },
   "dependencies": {
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.14",
     "uuid": "^3.3.2"
   }
 }
