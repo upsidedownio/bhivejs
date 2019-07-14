@@ -1,0 +1,6 @@
+.idea/
+.git/
+doc/
+test/
+.eslintrc.yaml
+.gitignore
