@@ -2,10 +2,10 @@ const BaseNode = require('./BaseNode');
 const {DECORATOR} = require('../constants');
 
 /**
- * @class BaseDecorator
+ * @category Decorator
  * @extends BaseNode
  */
-module.exports = class BaseDecorator extends BaseNode {
+class BaseDecorator extends BaseNode {
     /** @member {BaseNode} child
 
      /**
@@ -23,7 +23,10 @@ module.exports = class BaseDecorator extends BaseNode {
             name,
             properties,
         });
+        /** @type {BaseNode} */
         this.child = child;
     }
 
-};
+}
+
+module.exports = BaseDecorator;

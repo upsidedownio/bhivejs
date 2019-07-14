@@ -1,10 +1,10 @@
 const BaseNode = require('../core/BaseNode');
 const {TASK} = require('../constants');
 
-module.exports = class Task extends BaseNode {
+class Task extends BaseNode {
 
     /**
-     * Creates an instance of Action.
+     * Creates an instance of Task.
      * @param {Object} [options]
      * @param {String} [options.type='Action'] Node type.
      * @param {String} [options.name]
@@ -21,4 +21,6 @@ module.exports = class Task extends BaseNode {
         this.run = run;
     }
 
-};
+}
+
+module.exports = Task;

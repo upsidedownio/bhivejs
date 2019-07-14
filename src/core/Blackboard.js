@@ -1,10 +1,11 @@
 const _ = require('lodash');
 
 /**
- * @class Board
+ * Class Board
  */
 class Board {
     constructor() {
+        /** @type {*} */
         this.board = {};
     }
 
@@ -48,7 +49,7 @@ class Board {
 }
 
 /**
- * @class TreeBoard
+ * Class TreeBoard
  */
 class TreeBoard extends Board {
     constructor() {
@@ -127,9 +128,9 @@ class TreeBoard extends Board {
 }
 
 /**
- * @class Blackboard
+ * Class Blackboard
  **/
-module.exports = class Blackboard {
+class Blackboard {
 
     /**
      * Initialization method.
@@ -242,4 +243,6 @@ module.exports = class Blackboard {
 
         return targetBoard.get(key);
     }
-};
+}
+
+module.exports = Blackboard;

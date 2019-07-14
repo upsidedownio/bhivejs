@@ -2,56 +2,68 @@ const uuid = require('uuid/v4');
 const {RUNNING, ERROR} = require('../constants');
 
 /**
- * @typedef {'TASK'|'COMPOSITE'|'CONDITION'|'DECORATOR'} NODE_TYPE
+ * @typedef {string} NodeId
+ */
+
+/**
+ * @typedef {'TASK'|'COMPOSITE'|'CONDITION'|'DECORATOR'} NodeCategory
  */
 
 /**
  * @typedef {object} NodeData
  * @property {string} id            - uuid of class
  * @property {string} type          - type of node (e.g. class name)
- * @property {string} name          - name of node
- * @property {NODE_TYPE} category
+ * @property {string}   name          - name of node
+ * @property {NodeCategory} category - categories of nodes
  * @property {string} description
  */
 
 /**
- * @class BaseNode
+ * Class BaseNode
+ * @category Core
  **/
+
 class BaseNode {
 
     /**
      * @constructor
+     * @param {NodeCategory} category
+     * @param {string} type
+     * @param {string} name
+     * @param {string} description
+     * @param {object} properties
      **/
     constructor({category, type, name, description, properties} = {}) {
 
+        /**
+         * @type {NodeId} unique identifier of node. It uses the UUID format.
+         * @see RFC4122: https://tools.ietf.org/html/rfc4122
+         **/
         this.id = uuid();
 
         /**
          * Node category. Must be `COMPOSITE`, `DECORATOR`, `ACTION` or
          * `CONDITION`. This is defined automatically be inheriting the
          * correspondent class.
-         *
-         * @member BaseNode
+         * @type {string}
          **/
         this.category = category || '';
 
         /**
          * type of node. Must be a unique. e.g. class name
-         * @member BaseNode
+         * @type {string}
          **/
         this.type = type || '';
 
         /**
          * Node name.
-         * @optional
-         * @member BaseNode
+         * @type {string}
          **/
         this.name = name || this.type;
 
         /**
          * Node description.
-         *
-         * @member BaseNode
+         * @type {string}
          */
         this.description = description || '';
 
@@ -67,21 +79,16 @@ class BaseNode {
     }
 
     /**
-     * @method run
-     * @memberOf BaseNode
      * @param {Context} context A run instance.
-     * @return {Constant} The run state.
+     * @returns {Constant} The run state.
      */
     tick(context) {
         return this._tick(context);
     }
 
     /**
-     * @method _run
-     * @memberOf BaseNode
      * @param {Context} context A run instance.
-     * @return {Constant} The run state.
-     * @protected
+     * @returns {Constant} The run state.
      **/
     _tick(context) {
         // ENTER
@@ -156,9 +163,8 @@ class BaseNode {
 
     /**
      * Wrapper for close method.
-     * @method _close
      * @param {Context} context A run instance.
-     * @protected
+     * @returns {void}
      **/
     _close(context) {
         context.closeNode(this);
@@ -204,7 +210,6 @@ class BaseNode {
      * execution of node (perform a task, call children, etc.). It is called
      * every time a node is asked to run.
      *
-     * @method run
      * @param {Context} context A run instance.
      * @memberOf BaseNode
      **/
@@ -216,7 +221,6 @@ class BaseNode {
      * callback, and only if the run return a state different from
      * `RUNNING`.
      *
-     * @method close
      * @param {Context} context A run instance.
      **/
     close(context) {
@@ -226,7 +230,6 @@ class BaseNode {
      * Exit method, override this to use. Called every time in the end of the
      * execution.
      *
-     * @method exit
      * @param {Context} context A run instance.
      **/
     exit(context) {

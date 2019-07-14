@@ -5,7 +5,7 @@ const {FAILURE, RUNNING} = require('../constants');
  * @class Priority
  * @extends BaseComposite
  **/
-module.exports = class Priority extends BaseComposite {
+class Priority extends BaseComposite {
 
     /**
      * @constructor
@@ -51,4 +51,6 @@ module.exports = class Priority extends BaseComposite {
 
         return FAILURE;
     }
-};
+}
+
+module.exports = Priority;

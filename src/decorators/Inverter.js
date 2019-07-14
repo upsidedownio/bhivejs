@@ -2,16 +2,16 @@ const BaseDecorator = require('../core/BaseDecorator');
 const {FAILURE, SUCCESS, ERROR} = require('../constants');
 
 /**
- * Invert the result of the child
- * child (return SUCCESS) --> return FAILURE
- * child (return FAILURE) --> return SUCCESS
- * child (return RUNNING) --> return RUNNING
+ * Class Invert the result of the child
  *
- * @class Inverter
+ * if child returns `SUCCESS` --> Inverter returns `FAILURE`
+ * if child returns `FAILURE` --> Inverter returns `SUCCESS`
+ * if child returns `RUNNING` --> Inverter returns `RUNNING`
+ *
+ * @category Decorator
  * @extends BaseDecorator
  **/
-
-module.exports = class Inverter extends BaseDecorator {
+class Inverter extends BaseDecorator {
 
     /**
      * Creates an instance of Inverter.
@@ -47,4 +47,6 @@ module.exports = class Inverter extends BaseDecorator {
 
         return status;
     }
-};
+}
+
+module.exports = Inverter;

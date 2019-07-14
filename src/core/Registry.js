@@ -5,7 +5,7 @@
 /**
  * @class Registry
  */
-module.exports = class Registry {
+class Registry {
 
     /**
      * @constructor
@@ -49,4 +49,6 @@ module.exports = class Registry {
     getNodeTypes() {
         return Object.keys(this.registers);
     }
-};
+}
+
+module.exports = Registry;

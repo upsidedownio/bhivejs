@@ -7,7 +7,7 @@ const {RUNNING, ERROR} = require('../constants');
  * @extends BaseDecorator
  **/
 
-module.exports = class RewindWhenRunning extends BaseDecorator {
+class RewindWhenRunning extends BaseDecorator {
 
     /**
      * Creates an instance of Inverter.
@@ -41,4 +41,6 @@ module.exports = class RewindWhenRunning extends BaseDecorator {
 
         return status;
     }
-};
+}
+
+module.exports = RewindWhenRunning;

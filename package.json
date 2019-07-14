@@ -25,11 +25,19 @@
   },
   "homepage": "https://github.com/upsidedownio/bhive",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "doc": "npm run doc:serve & npm run doc:watch",
+    "doc:build": "jsdoc -c ./doc/jsdoc.config.js",
+    "doc:watch": "nodemon --exec 'npm run doc:build' -w doc/guide/**/*.md -w ./src -i ./doc",
+    "doc:serve": "lite-server -c doc/bs-config.doc.json"
   },
   "devDependencies": {
     "ava": "^1.4.1",
-    "eslint": "^5.16.0"
+    "better-docs": "^1.1.6",
+    "eslint": "^5.16.0",
+    "eslint-plugin-jsdoc": "^10.1.0",
+    "jsdoc": "^3.6.2",
+    "lite-server": "^2.5.3"
   },
   "dependencies": {
     "lodash": "^4.17.11",

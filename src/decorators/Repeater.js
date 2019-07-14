@@ -2,16 +2,15 @@ const Decorator = require('../core/BaseDecorator');
 const {SUCCESS, ERROR, FAILURE} = require('../constants');
 
 /**
+ * Class repeating a child.
+ *
  * Repeater is a decorator that repeats the run signal until the child node
  * return `RUNNING` or `ERROR`. Optionally, a maximum number of repetitions
  * can be defined.
- *
- * @module b3
- * @class Repeater
+ * @category Decorator
  * @extends Decorator
  **/
-
-module.exports = class Repeater extends Decorator {
+class Repeater extends Decorator {
 
     /**
      * Creates an instance of MaxTime.
@@ -19,10 +18,9 @@ module.exports = class Repeater extends Decorator {
      * - **maxLoop** (*Integer*) Maximum number of repetitions. Default to -1 (infinite).
      * - **child** (*BaseNode*) The child node.
      *
-     * @param {Object} params Object with parameters.
-     * @param {Number} params.maxLoop Maximum number of repetitions. Default to -1 (infinite).
+     * @param {Object} params           - Object with parameters.
+     * @param {Number} [params.maxLoop=-1 (infinite)]   - Maximum number of repetitions.
      * @param {BaseNode} params.child The child node.
-     * @memberOf Repeater
      **/
     constructor({maxLoop = -1, name, child = null} = {}) {
         super({
@@ -32,13 +30,15 @@ module.exports = class Repeater extends Decorator {
             properties: {maxLoop: -1},
         });
 
+        /** @type {Number} Maximum number of repetitions. */
         this.maxLoop = maxLoop;
     }
 
     /**
      * Open method.
-     * @method open
+     * @function open
      * @param {Context} context A run instance.
+     * @returns {void}
      **/
     open(context) {
         context.blackboard.tree(context.tree.id).node(this.id).set('i', 0);
@@ -46,7 +46,7 @@ module.exports = class Repeater extends Decorator {
 
     /**
      * Context method.
-     * @method run
+     * @function run
      * @param {Context} context A run instance.
      **/
     run(context) {
@@ -70,4 +70,6 @@ module.exports = class Repeater extends Decorator {
         context.blackboard.tree(context.tree.id).node(this.id).set('i', i);
         return status;
     }
-};
+}
+
+module.exports = Repeater;

@@ -7,11 +7,9 @@ const {TASK, RUNNING, ERROR} = require('../constants');
  * @property {string} logDir
  * @property {string} uuid
  */
-module.exports = class AsyncTask extends BaseNode {
+class AsyncTask extends BaseNode {
 
-    /**
-     * @constructor
-     */
+    /** @constructor */
     constructor({type = 'AsyncAction', name, properties, run} = {}) {
         /**
          * @member {string} type
@@ -62,4 +60,6 @@ module.exports = class AsyncTask extends BaseNode {
         context.logger.debug(`success asyncTask:${this.name} with status: ` + nodeBoard.get('asyncStatus'));
         nodeBoard.clear('asyncStatus');
     }
-};
+}
+
+module.exports = AsyncTask;

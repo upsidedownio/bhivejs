@@ -1,7 +1,7 @@
 const Decorator = require('../core/BaseDecorator');
 const {SUCCESS, ERROR, FAILURE, RUNNING} = require('../constants');
 
-module.exports = class UntilSuccess extends Decorator {
+class UntilSuccess extends Decorator {
 
     /**
      * Creates an instance of UntilSuccess.
@@ -70,4 +70,6 @@ module.exports = class UntilSuccess extends Decorator {
         context.blackboard.tree(context.tree.id).node(this.id).set('i', i);
         return childStatus;
     }
-};
+}
+
+module.exports = UntilSuccess;

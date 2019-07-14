@@ -10,7 +10,7 @@
 /**
  * @class TreeBuilder
  */
-module.exports = class TreeBuilder {
+class TreeBuilder {
 
     /**
      * @param {object}          param
@@ -21,4 +21,6 @@ module.exports = class TreeBuilder {
         this.registry = registry;
         this.treeDefinition = treeDefinition;
     }
-};
+}
+
+module.exports = TreeBuilder;
