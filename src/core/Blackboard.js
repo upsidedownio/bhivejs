@@ -50,6 +50,7 @@ class Board {
 
 /**
  * Class TreeBoard
+ * @extends Board
  */
 class TreeBoard extends Board {
     constructor() {
@@ -139,12 +140,10 @@ class Blackboard {
     constructor() {
         /**
          * @type {Board}
-         * @private
          */
         this._shared = new Board();
         /**
          * @type {Object.<string, TreeBoard>}
-         * @private
          */
         this._trees = {};
     }
@@ -166,7 +165,7 @@ class Blackboard {
     }
 
     /**
-     * @returns {Object.<string, TreeBoard>}
+     * @type {Object.<string, TreeBoard>}
      */
     get trees() {
         return this._trees;
@@ -195,7 +194,6 @@ class Blackboard {
     }
 
     /**
-     * @method set
      * @param {String}  key     - key where store value
      * @param {*}       value   - value to store
      * @param {String} [treeId] - Tree id
@@ -220,7 +218,6 @@ class Blackboard {
     }
 
     /**
-     * @method get
      * @param {String} key          - key
      * @param {String} [treeId]     - Tree id
      * @param {String} [nodeId]     - Node id

@@ -26,6 +26,8 @@ const {defaultBehaviorTreeOptions} = require('../constants');
  */
 
 /**
+ * @constant
+ * @type {{emerg: number, debug: number, crit: number, err: number, alert: number, warning: number, notice: number, info: number}}
  */
 const severities = {
     emerg: 1,

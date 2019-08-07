@@ -7,8 +7,8 @@ const {SUCCESS, ERROR, FAILURE} = require('../constants');
  * Repeater is a decorator that repeats the run signal until the child node
  * return `RUNNING` or `ERROR`. Optionally, a maximum number of repetitions
  * can be defined.
- * @category Decorator
  * @extends Decorator
+ * @category Decorators
  **/
 class Repeater extends Decorator {
 
@@ -30,13 +30,12 @@ class Repeater extends Decorator {
             properties: {maxLoop: -1},
         });
 
-        /** @type {Number} Maximum number of repetitions. */
+        /** @type {number} */
         this.maxLoop = maxLoop;
     }
 
     /**
      * Open method.
-     * @function open
      * @param {Context} context A run instance.
      * @returns {void}
      **/
@@ -46,7 +45,6 @@ class Repeater extends Decorator {
 
     /**
      * Context method.
-     * @function run
      * @param {Context} context A run instance.
      **/
     run(context) {

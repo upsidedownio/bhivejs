@@ -8,16 +8,16 @@ const {FAILURE, SUCCESS, ERROR} = require('../constants');
  * if child returns `FAILURE` --> Inverter returns `SUCCESS`
  * if child returns `RUNNING` --> Inverter returns `RUNNING`
  *
- * @category Decorator
+ * @category Decorators
  * @extends BaseDecorator
  **/
 class Inverter extends BaseDecorator {
 
     /**
      * Creates an instance of Inverter.
+     * @constructor
      * @param {Object}   params
      * @param {BaseNode} params.child
-     * @memberOf Inverter
      */
     constructor({child = null} = {}) {
         super({
@@ -28,7 +28,7 @@ class Inverter extends BaseDecorator {
 
     /**
      * Context method.
-     * @method run
+     * @override
      * @param {Context} context A run instance.
      * @return {Constant} A state constant.
      **/

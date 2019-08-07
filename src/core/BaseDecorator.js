@@ -2,12 +2,10 @@ const BaseNode = require('./BaseNode');
 const {DECORATOR} = require('../constants');
 
 /**
- * @category Decorator
+ * Class BaseDecorator
  * @extends BaseNode
  */
 class BaseDecorator extends BaseNode {
-    /** @member {BaseNode} child
-
      /**
      * Creates an instance of Decorator.
      * @constructor
@@ -16,11 +14,12 @@ class BaseDecorator extends BaseNode {
      * @param {String} opts.name
      * @param {Object} opts.properties
      */
-    constructor({child = null, type = 'Decorator', name, properties} = {}) {
+    constructor({child = null, type = 'Decorator', name, description, properties} = {}) {
         super({
             category: DECORATOR,
             type,
             name,
+            description,
             properties,
         });
         /** @type {BaseNode} */

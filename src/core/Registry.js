@@ -3,7 +3,7 @@
 /**@typedef {Object.<NodeType, NodeDefinition>} Registers*/
 
 /**
- * @class Registry
+ * Class Registry
  */
 class Registry {
 

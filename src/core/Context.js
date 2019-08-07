@@ -7,54 +7,43 @@ const Logger = require('../utils/Logger');
  */
 
 /**
- * @class Context
+ * Class Context
  **/
 class Context {
     /**
      * @constructor
-     * @param {BehaviorTree}        tree
-     * @param {Blackboard}          blackboard
-     * @param {BehaviorTreeOptions}[options]
+     * @param {BehaviorTree}            tree
+     * @param {Blackboard}              blackboard
+     * @param {BehaviorTreeOptions}    [options]
      */
     constructor(tree, blackboard, options = {}) {
-        /**
-         * @type {BehaviorTree}
-         * @member Context
-         */
+        /** @type {BehaviorTree} */
         this.tree = tree;
-        /**
-         * @type {Blackboard}
-         * @member Context
-         */
+        /** @type {Blackboard} */
         this._blackboard = blackboard;
-        /**
-         * @type {BehaviorTreeOptions}
-         * @member Context
-         */
+        /** @type {BehaviorTreeOptions} */
         this.options = options;
-        /**
-         * @type {BaseNode[]}
-         * @member Context
-         */
+        /** @type {BaseNode[]} */
         this.activeNodes = [];
-        /**
-         * @type {Logger}
-         * @member Context
-         */
+        /** @type {Logger} */
         this.logger = new Logger(this, this.options.logger);
     }
 
+    /**
+     * @type {Blackboard}
+     */
     get blackboard() {
         return this._blackboard;
     }
 
-    set blackboard(bb) {
-        this._blackboard = bb;
+    /**
+     * @param {Blackboard} blackboard
+     */
+    set blackboard(blackboard) {
+        this._blackboard = blackboard;
     }
 
     /**
-     * @function enterNode
-     * @memberOf Context
      * @param {BaseNode} node   - caller node
      **/
     enterNode(node) {
@@ -62,8 +51,6 @@ class Context {
     }
 
     /**
-     * @function openNode
-     * @memberOf Context
      * @param {BaseNode} node   - caller node
      **/
     openNode(node) {
@@ -72,8 +59,6 @@ class Context {
     }
 
     /**
-     * @function runNode
-     * @memberOf Context
      * @param {BaseNode} node   - caller node
      **/
     runNode(node) {
@@ -81,8 +66,6 @@ class Context {
     }
 
     /**
-     * @function closeNode
-     * @memberOf Context
      * @param {BaseNode} node   - caller node
      **/
     closeNode(node) {
@@ -91,8 +74,6 @@ class Context {
     }
 
     /**
-     * @function exitNode
-     * @memberOf Context
      * @param {BaseNode} node   - caller node
      **/
     exitNode(node) {

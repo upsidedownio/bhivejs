@@ -2,18 +2,18 @@ const BaseDecorator = require('../core/BaseDecorator');
 const {RUNNING, ERROR} = require('../constants');
 
 /**
+ * Class RewindWhenRunning
  * If one of sequence node failed, rewind runningChild to very first
- * @class RewindWhenRunning
  * @extends BaseDecorator
+ * @category Decorators
  **/
-
 class RewindWhenRunning extends BaseDecorator {
 
     /**
      * Creates an instance of Inverter.
+     * @constructor
      * @param {Object}   params
      * @param {BaseNode} params.child
-     * @memberOf RewindWhenRunning
      */
     constructor({child = null} = {}) {
         super({
@@ -24,7 +24,6 @@ class RewindWhenRunning extends BaseDecorator {
 
     /**
      * Context method.
-     * @method run
      * @param {Context} context A run instance.
      * @return {Constant} A state constant.
      **/

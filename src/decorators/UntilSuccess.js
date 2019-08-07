@@ -1,7 +1,12 @@
-const Decorator = require('../core/BaseDecorator');
+const BaseDecorator = require('../core/BaseDecorator');
 const {SUCCESS, ERROR, FAILURE, RUNNING} = require('../constants');
 
-class UntilSuccess extends Decorator {
+/**
+ * Class UntilSuccess
+ * @extends BaseDecorator
+ * @category Decorators
+ */
+class UntilSuccess extends BaseDecorator {
 
     /**
      * Creates an instance of UntilSuccess.
@@ -9,10 +14,10 @@ class UntilSuccess extends Decorator {
      * - **maxLoop** (*Integer*) Maximum number of repetitions. Default to -1 (infinite).
      * - **child** (*BaseNode*) The child node.
      *
+     * @constructor
      * @param {Object} params Object with parameters.
      * @param {Number} params.maxLoop Maximum number of repetitions. Default to -1 (infinite).
      * @param {BaseNode} params.child The child node.
-     * @memberOf UntilSuccess
      **/
     constructor({maxLoop = -1, child = null} = {}) {
         super({
@@ -27,7 +32,6 @@ class UntilSuccess extends Decorator {
 
     /**
      * Open method.
-     * @method open
      * @param {Context} context A run instance.
      **/
     open(context) {
@@ -36,7 +40,6 @@ class UntilSuccess extends Decorator {
 
     /**
      * Context method.
-     * @method run
      * @param {Context} context A run instance.
      * @return {Constant} A state constant.
      **/
