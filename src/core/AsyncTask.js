@@ -7,17 +7,26 @@ const {TASK, RUNNING, ERROR} = require('../constants');
  * @property {string} logDir
  * @property {string} uuid
  */
+
+/**
+ * Class AsyncTask
+ * @extends BaseNode
+ */
 class AsyncTask extends BaseNode {
 
-    /** @constructor */
-    constructor({type = 'AsyncAction', name, properties, run} = {}) {
-        /**
-         * @member {string} type
-         */
+    /**
+     * @constructor
+     * @param {object}      params={}
+     * @param {string}     [params.type='AsyncTask']
+     * @param {string}     [params.name=params.type]
+     * @param {object}     [params.properties]
+     * @param {function}    params.run
+     */
+    constructor({type = 'AsyncTask', name, properties, run} = {}) {
         super({
             category: TASK,
             type,
-            name: name,
+            name: name || type,
             properties
         });
 
@@ -44,7 +53,6 @@ class AsyncTask extends BaseNode {
     }
 
     /**
-     * @method _run
      * @override
      * @param {Context} context A run instance.
      * @return {Constant} A state constant.
@@ -55,6 +63,9 @@ class AsyncTask extends BaseNode {
         return nodeBoard.get('asyncStatus');
     }
 
+    /**
+     * @param context
+     */
     close(context) {
         const nodeBoard = context.blackboard.tree(context.tree).node(this);
         context.logger.debug(`success asyncTask:${this.name} with status: ` + nodeBoard.get('asyncStatus'));

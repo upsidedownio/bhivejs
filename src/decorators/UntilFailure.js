@@ -1,28 +1,27 @@
-const Decorator = require('../core/BaseDecorator');
+const BaseDecorator = require('../core/BaseDecorator');
 const {SUCCESS, FAILURE, ERROR, RUNNING} = require('../constants');
 
 /**
+ * Class UntilFailure
  * UntilFailure is a decorator that repeats the run signal until the
  * node child returns `FAILURE`, `RUNNING` or `ERROR`. Optionally, a maximum
  * number of repetitions can be defined.
  *
- * @module b3
- * @class UntilFailure
- * @extends Decorator
+ * @extends BaseDecorator
+ * @category Decorators
  **/
 
-class UntilFailure extends Decorator {
+class UntilFailure extends BaseDecorator {
 
     /**
      * Creates an instance of UntilFailure.
      *
      * - **maxLoop** (*Integer*) Maximum number of repetitions. Default to -1 (infinite).
      * - **child** (*BaseNode*) The child node.
-     *
+     * @constructor
      * @param {Object} params Object with parameters.
      * @param {Number} params.maxLoop Maximum number of repetitions. Default to -1 (infinite).
      * @param {BaseNode} params.child The child node.
-     * @memberOf UntilFailure
      **/
     constructor({maxLoop = -1, child = null} = {}) {
         super({
@@ -37,7 +36,6 @@ class UntilFailure extends Decorator {
 
     /**
      * Open method.
-     * @method open
      * @param {Context} context A run instance.
      **/
     open(context) {
@@ -46,7 +44,6 @@ class UntilFailure extends Decorator {
 
     /**
      * Context method.
-     * @method run
      * @param {Context} context A run instance.
      * @return {Constant} A state constant.
      **/

@@ -1,6 +1,6 @@
 {
   "name": "bhive",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Behavior Tree for Javascript",
   "main": "src/index.js",
   "repository": {
@@ -34,13 +34,13 @@
   "devDependencies": {
     "ava": "^2.2.0",
     "better-docs": "^1.1.6",
-    "eslint": "^6.0.1",
-    "eslint-plugin-jsdoc": "^15.5.1",
+    "eslint": "^6.1.0",
+    "eslint-plugin-jsdoc": "^15.8.0",
     "jsdoc": "^3.6.3",
     "lite-server": "^2.5.3"
   },
   "dependencies": {
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.15",
     "uuid": "^3.3.2"
   }
 }

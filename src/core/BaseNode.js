@@ -24,19 +24,20 @@ const {RUNNING, ERROR} = require('../constants');
  **/
 
 class BaseNode {
-
     /**
      * @constructor
-     * @param {NodeCategory} category
-     * @param {string} type
-     * @param {string} name
-     * @param {string} description
-     * @param {object} properties
+     * @param {object}          params
+     * @param {NodeCategory}    params.category
+     * @param {string}          params.type
+     * @param {string}          params.name
+     * @param {string}          params.description
+     * @param {object}          params.properties
      **/
     constructor({category, type, name, description, properties} = {}) {
 
         /**
-         * @type {NodeId} unique identifier of node. It uses the UUID format.
+         * unique identifier of node. It uses the UUID format.
+         * @type {NodeId}
          * @see RFC4122: https://tools.ietf.org/html/rfc4122
          **/
         this.id = uuid();
@@ -71,7 +72,6 @@ class BaseNode {
          * A dictionary (key, value) describing the node properties. Useful for
          * defining custom variables inside the visual editor.
          *
-         * @property properties
          * @type {Object}
          * @readonly
          **/
@@ -116,8 +116,6 @@ class BaseNode {
 
     /**
      * Wrapper for enter method.
-     * @method _enter
-     * @memberOf BaseNode
      * @param {Context} context   - A run instance.
      * @protected
      **/
@@ -128,8 +126,6 @@ class BaseNode {
 
     /**
      * Wrapper for open method.
-     * @method _open
-     * @memberOf BaseNode
      * @param {Context} context     - A run instance.
      * @protected
      **/
@@ -141,8 +137,6 @@ class BaseNode {
 
     /**
      * Wrapper for run method.
-     * @method _run
-     * @memberOf BaseNode
      * @param {Context} context A run instance.
      * @return {Constant} A state constant.
      * @protected
@@ -174,7 +168,6 @@ class BaseNode {
 
     /**
      * Wrapper for exit method.
-     * @method _exit
      * @param {Context} context A run instance.
      * @protected
      **/
@@ -187,7 +180,6 @@ class BaseNode {
      * Enter method, override this to use. It is called every time a node is
      * asked to run, before the run itself.
      *
-     * @method enter
      * @param {Context} context A run instance.
      **/
     enter(context) {
@@ -199,7 +191,6 @@ class BaseNode {
      *
      * Note: a node will be closed if it returned `RUNNING` in the run.
      *
-     * @method open
      * @param {Context} context A run instance.
      **/
     open(context) {
@@ -211,7 +202,6 @@ class BaseNode {
      * every time a node is asked to run.
      *
      * @param {Context} context A run instance.
-     * @memberOf BaseNode
      **/
     run(context) {
     }

@@ -5,7 +5,7 @@ const Blackboard = require('./Blackboard');
 const {defaultBehaviorTreeOptions} = require('../constants');
 
 /**
- * @class BehaviorTree
+ * Class BehaviorTree
  **/
 class BehaviorTree {
 
@@ -18,71 +18,74 @@ class BehaviorTree {
      **/
     constructor({root, blackboard, properties, options} = {options: {}}) {
         /**
-         * @member BehaviorTree
+         * unique id of node
          * @type {string}
          */
         this.id = uuid();
         /**
-         * @member BehaviorTree
-         * @type {Object}
+         * @type {string}
          */
         this.name = 'BehaviorTree';
         /**
-         * @member BehaviorTree
-         * @type {Object}
+         * @type {string}
          */
         this.description = `BehaviorTree with id: ${this.id}`;
         /**
-         * @member BehaviorTree
          * @type {Object}
          */
         this.properties = properties || {};
         /**
-         * @member BehaviorTree
          * @type {BaseNode}
          */
         this._root = root;
         /**
-         * @member BehaviorTree
          * @type {BehaviorTreeOptions}
          */
         this.options = _.defaults(options, defaultBehaviorTreeOptions);
         /**
-         * @member BehaviorTree
          * @type {Boolean}
          */
         this.debug = this.options.debug || false;
         /**
-         * @member BehaviorTree
          * @type {Blackboard}
          */
         this._blackboard = blackboard || new Blackboard();
         /**
-         * @member BehaviorTree
          * @type {Context}
          */
         this.context = new Context(this, this._blackboard, this.options);
     }
 
+    /**
+     * @returns {BaseNode}
+     */
     get root() {
         return this._root;
     }
 
+    /**
+     * @param {BaseNode} root
+     */
     set root(root) {
         this._root = root;
     }
 
+    /**
+     * @returns {Blackboard}
+     */
     get blackboard() {
         return this._blackboard;
     }
 
-    set blackboard(bb) {
-        this._blackboard = bb;
-        this.context._blackboard = bb;
+    /**
+     * @param {Blackboard} blackboard
+     */
+    set blackboard(blackboard) {
+        this._blackboard = blackboard;
+        this.context._blackboard = blackboard;
     }
 
     /**
-     * @memberOf BehaviorTree
      * @param {Context}    [context]
      * @return {Constant}
      **/

@@ -2,8 +2,9 @@ const BaseComposite = require('../core/BaseComposite');
 const {SUCCESS, RUNNING} = require('../constants');
 
 /**
- * @class Sequence
+ * Class Sequence
  * @extends BaseComposite
+ * @category Composites
  **/
 class Sequence extends BaseComposite {
 
@@ -22,7 +23,6 @@ class Sequence extends BaseComposite {
 
     /**
      * @override
-     * @function open
      * @param {Context} context
      **/
     open(context) {
@@ -31,7 +31,6 @@ class Sequence extends BaseComposite {
 
     /**
      * @override
-     * @function run
      * @param {Context} context
      * @return {Constant}
      **/

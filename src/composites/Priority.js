@@ -2,8 +2,9 @@ const BaseComposite = require('../core/BaseComposite');
 const {FAILURE, RUNNING} = require('../constants');
 
 /**
- * @class Priority
+ * Class Priority
  * @extends BaseComposite
+ * @category Composites
  **/
 class Priority extends BaseComposite {
 
@@ -22,7 +23,6 @@ class Priority extends BaseComposite {
 
     /**
      * @override
-     * @function open
      * @param {Context} context
      **/
     open(context) {
@@ -31,7 +31,6 @@ class Priority extends BaseComposite {
 
     /**
      * @override
-     * @function run
      * @param {Context} context
      * @return {Constant}
      **/
