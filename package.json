@@ -28,7 +28,7 @@
     "test": "ava",
     "doc": "npm run doc:serve & npm run doc:watch",
     "doc:build": "jsdoc -c ./doc/jsdoc.config.js",
-    "doc:watch": "nodemon --exec 'npm run doc:build' -w doc/guide/**/*.md -w ./src -i ./doc",
+    "doc:watch": "nodemon --exec 'npm run doc:build' -w ./src -w ./doc/guide -i ./doc/dist --ext '*'",
     "doc:serve": "lite-server -c doc/bs-config.doc.json"
   },
   "devDependencies": {
