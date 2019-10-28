@@ -1,132 +1,6 @@
 const _ = require('lodash');
-
-/**
- * Class Board
- */
-class Board {
-    constructor() {
-        /** @type {*} */
-        this.board = {};
-    }
-
-    /**
-     * @param {string}  key
-     * @returns {*}
-     */
-    get(key) {
-        return _.get(this.board, key)
-    }
-
-    /**
-     * @param {string}  key
-     * @param {*}       value
-     */
-    set(key, value) {
-        _.set(this.board, key, value)
-    }
-
-    /**
-     * @param {string} key
-     */
-    clear(key) {
-        delete this.board[key];
-    }
-
-    /**
-     * check board is empty or not
-     * @returns {boolean}
-     */
-    isEmpty() {
-        return _.isEmpty(this.board);
-    }
-
-    /**
-     * @returns {object}
-     */
-    toJSON() {
-        return this.board;
-    }
-}
-
-/**
- * Class TreeBoard
- * @extends Board
- */
-class TreeBoard extends Board {
-    constructor() {
-        super();
-        /**
-         * @type {Object.<string, Board>}
-         * @private
-         */
-        this._nodes = {};
-    }
-
-    /**
-     * @param {BaseNode|string} node
-     * @param {object} opts
-     * @param {boolean} [opts.safe=true] if this flag enabled, generate empty node board when cannot find node board
-     * @returns {Board}
-     */
-    node(node, {safe = true} = {safe: true}) {
-        const nodeId = node.id || node;
-        const nodeBoard = _.get(this._nodes, nodeId);
-        if (!nodeBoard && safe) {
-            _.set(this._nodes, nodeId, new Board());
-        }
-        return _.get(this._nodes, nodeId);
-    }
-
-    /**
-     * get all NodeBoards
-     * @returns {object.<string, Board>}
-     */
-    get nodes() {
-        return this._nodes;
-    }
-
-    isEmpty() {
-        if (!super.isEmpty()) {
-            return false;
-        }
-        for (let node of this._nodes) {
-            if (!node.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    removeNode(node) {
-        delete this._nodes[node.id || node];
-    }
-
-    gc() {
-        for (let [node, nodeId] of this._nodes) {
-            if (node.isEmpty()) {
-                this.removeNode(nodeId);
-            }
-        }
-    }
-
-    /**
-     * @param {object} [opts]
-     * @param {boolean} [opts.tree=true]
-     * @param {boolean} [opts.node=true]
-     * @returns {object}
-     */
-    toJSON({tree = true, node = true} = {tree: true, node: true}) {
-        const json = {};
-        if (tree) {
-            json.tree = this.board;
-        }
-        if (node) {
-            json.node = this._nodes;
-        }
-
-        return json;
-    }
-}
+const Board = require('./Board');
+const TreeBoard = require('./TreeBoard');
 
 /**
  * Class Blackboard
@@ -138,30 +12,30 @@ class Blackboard {
      * @constructor
      **/
     constructor() {
-        /**
-         * @type {Board}
-         */
+        /** @type {Board} */
         this._shared = new Board();
-        /**
-         * @type {Object.<string, TreeBoard>}
-         */
+        /** @type {Object.<UUID, TreeBoard>} */
         this._trees = {};
     }
 
     /**
      * Get tree board by treeId
-     * @param {BaseNode|string} tree             - tree id
-     * @param {object}          opts               - options
+     * @param {BaseNode|string} tree               - tree id
+     * @param {object}         [opts]              - options
      * @param {boolean}        [opts.safe=true]    - if flag enabled, generate empty tree board when cannot find tree board
      * @returns {Board}
      */
-    tree(tree, {safe = true} = {safe: true}) {
-        const treeId = tree.id || tree;
+    tree(tree, opts = {safe: true}) {
+        const treeId = _.get(tree, 'id') || tree;
         const treeBoard = _.get(this._trees, treeId);
-        if (!treeBoard && safe) {
+        if (!treeBoard && opts.safe) {
             _.set(this._trees, treeId, new TreeBoard());
         }
         return _.get(this._trees, treeId);
+    }
+
+    get shared() {
+        return this._shared;
     }
 
     /**
