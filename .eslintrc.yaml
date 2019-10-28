@@ -10,6 +10,7 @@ parserOptions:
 
 plugins:
   - jsdoc
+  - ava
 
 settings:
   jsdoc:
