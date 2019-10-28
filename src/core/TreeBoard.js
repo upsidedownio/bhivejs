@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const Board = require('./Board');
+const NodeBoard = require('./NodeBoard');
 
 /**
  * Class TreeBoard
@@ -18,14 +19,17 @@ class TreeBoard extends Board {
     /**
      * @param {BaseNode|string} node
      * @param {object} opts
-     * @param {boolean} [opts.safe=true] if this flag enabled, generate empty node board when cannot find node board
+     * @param {boolean} [opts.safe=false] if this flag enabled, generate empty node board when cannot find node board
      * @returns {Board}
      */
-    node(node, {safe = true} = {safe: true}) {
+    node(node, {safe = true} = {safe: false}) {
+        if (!node) {
+            return undefined;
+        }
         const nodeId = node.id || node;
         const nodeBoard = _.get(this._nodes, nodeId);
         if (!nodeBoard && safe) {
-            _.set(this._nodes, nodeId, new Board());
+            _.set(this._nodes, nodeId, new NodeBoard());
         }
         return _.get(this._nodes, nodeId);
     }
@@ -50,8 +54,41 @@ class TreeBoard extends Board {
         return true;
     }
 
+    /**
+     * @returns {UUID[]}
+     */
+    listNode(){
+        return Object.keys(this._nodes);
+    }
+
+    /**
+     * create board for node
+     * @param {BaseNode|UUID} node
+     * @returns {Board|undefined} return created board, if failed, is returns undefined
+     */
+    createNode(node) {
+        if (!node) {
+            return undefined;
+        }
+        const nodeId = node.id || node;
+        const existNodeBoard = this.node(nodeId);
+        if (existNodeBoard) {
+            return existNodeBoard;
+        }
+        _.set(this._nodes, nodeId, new NodeBoard());
+        return this._nodes[nodeId];
+    }
+
+    /**
+     * @param {BaseNode|UUID} node
+     * @returns {boolean} deletion success or not
+     */
     removeNode(node) {
+        if (!node) {
+            return false;
+        }
         delete this._nodes[node.id || node];
+        return true;
     }
 
     gc() {
@@ -72,6 +109,7 @@ class TreeBoard extends Board {
         const json = {};
         if (tree) {
             json.tree = this.board;
+            json.treeMemory = this.board;
         }
         if (node) {
             json.node = this._nodes;

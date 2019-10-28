@@ -19,31 +19,36 @@ class Board {
      * @returns {*} found data
      */
     get(key) {
-        return _.get(this.board, key)
+        return _.get(this.board, key);
     }
 
     /**
      * @param {string}  key
      * @param {*}       value
+     * @returns {Board} return itself
      */
     set(key, value) {
-        _.set(this.board, key, value)
+        _.set(this.board, key, value);
+        return this;
     }
 
     /**
      * Delete specific data by key
      * @param {string} key
+     * @returns {Board} return itself
      */
     unset(key) {
         delete this.board[key];
+        return this;
     }
 
     /**
      * Clear all data on board
-     * @returns {void}
+     * @returns {Board} return itself
      */
     clear() {
         this.board = {};
+        return this;
     }
 
     /**

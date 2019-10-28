@@ -22,10 +22,10 @@ class Blackboard {
      * Get tree board by treeId
      * @param {BaseNode|string} tree               - tree id
      * @param {object}         [opts]              - options
-     * @param {boolean}        [opts.safe=true]    - if flag enabled, generate empty tree board when cannot find tree board
-     * @returns {Board}
+     * @param {boolean}        [opts.safe=false]   - if flag enabled, generate empty tree board when cannot find tree board
+     * @returns {TreeBoard}
      */
-    tree(tree, opts = {safe: true}) {
+    tree(tree, opts = {safe: false}) {
         const treeId = _.get(tree, 'id') || tree;
         const treeBoard = _.get(this._trees, treeId);
         if (!treeBoard && opts.safe) {
@@ -34,6 +34,47 @@ class Blackboard {
         return _.get(this._trees, treeId);
     }
 
+    /**
+     * @param {BehaviorTree|UUID} tree
+     * @returns {undefined|TreeBoard}
+     */
+    createTree(tree) {
+        if (!tree) {
+            return undefined;
+        }
+        const treeId = tree.id || tree;
+        const existNodeBoard = this.tree(treeId);
+        if (existNodeBoard) {
+            return existNodeBoard;
+        }
+        _.set(this._trees, treeId, new TreeBoard());
+        return this._trees[treeId];
+    }
+
+    /**
+     * @param {BehaviorTree|UUID} tree
+     * @returns {boolean}
+     */
+    removeTree(tree) {
+        if (!tree) {
+            return false;
+        }
+        delete this._trees[tree.id || tree];
+        return true;
+    }
+
+    /**
+     * Get list of BehaviorTree Id
+     * @returns {UUID[]}
+     */
+    listTree() {
+        return Object.keys(this._trees);
+    }
+
+    /**
+     * get shared board
+     * @returns {Board}
+     */
     get shared() {
         return this._shared;
     }
@@ -43,15 +84,6 @@ class Blackboard {
      */
     get trees() {
         return this._trees;
-    }
-
-    /**
-     * @param {BaseNode|string}  tree
-     * @param {BaseNode|string}  node
-     * @returns {TreeBoard}
-     */
-    node(tree, node) {
-        return this.tree(tree).node(node);
     }
 
     /**
@@ -70,49 +102,17 @@ class Blackboard {
     /**
      * @param {String}  key     - key where store value
      * @param {*}       value   - value to store
-     * @param {String} [treeId] - Tree id
-     * @param {String} [nodeId] - Node id
      **/
-    set(key, value, treeId, nodeId) {
-        let targetBoard = this._shared;
-        // TODO remove 3rd, 4th argument from this function
-        if (nodeId) {
-            console.error('Blackboard.set(key, value, treeId, nodeId) is deprecated.' +
-                ' use Blackboard.tree(treeId).node(nodeId).set(key, value) instead\n' + new Error().stack);
-            targetBoard = this.tree(treeId).node(nodeId);
-            process.exit(1);
-        } else if (treeId) {
-            console.error('Blackboard.set(key, value, treeId) is deprecated.' +
-                ' use Blackboard.tree(treeId).set(key, value) instead\n' + new Error().stack);
-            targetBoard = this.tree(treeId);
-            process.exit(1);
-        }
-
-        return targetBoard.set(key, value);
+    set(key, value) {
+        return this._shared.set(key, value);
     }
 
     /**
      * @param {String} key          - key
-     * @param {String} [treeId]     - Tree id
-     * @param {String} [nodeId]     - Node id
      * @return {*}
      **/
-    get(key, treeId, nodeId) {
-        let targetBoard = this._shared;
-        // TODO remove 3rd, 4th argument from this function
-        if (nodeId) {
-            console.error('Blackboard.get(key, treeId, nodeId) is deprecated.' +
-                ' use Blackboard.tree(treeId).node(nodeId).get(key) instead\n' + new Error().stack);
-            targetBoard = this.tree(treeId).node(nodeId);
-            process.exit(1);
-        } else if (treeId) {
-            console.error('Blackboard.get(key, treeId) is deprecated.' +
-                ' use Blackboard.tree(treeId).get(key) instead\n' + new Error().stack);
-            targetBoard = this.tree(treeId);
-            process.exit(1);
-        }
-
-        return targetBoard.get(key);
+    get(key) {
+        return this._shared.get(key);
     }
 }
 
