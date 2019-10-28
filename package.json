@@ -38,7 +38,8 @@
     "eslint-plugin-ava": "^9.0.0",
     "eslint-plugin-jsdoc": "^15.8.0",
     "jsdoc": "^3.6.3",
-    "lite-server": "^2.5.3"
+    "lite-server": "^2.5.3",
+    "sinon": "^7.5.0"
   },
   "dependencies": {
     "lodash": "^4.17.15",
