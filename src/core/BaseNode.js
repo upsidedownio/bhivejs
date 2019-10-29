@@ -13,7 +13,7 @@ const {RUNNING, ERROR} = require('../constants');
  * @typedef {object} NodeData
  * @property {string} id            - uuid of class
  * @property {string} type          - type of node (e.g. class name)
- * @property {string}   name          - name of node
+ * @property {string} name          - name of node
  * @property {NodeCategory} category - categories of nodes
  * @property {string} description
  */
@@ -43,10 +43,10 @@ class BaseNode {
         this.id = uuid();
 
         /**
-         * Node category. Must be `COMPOSITE`, `DECORATOR`, `ACTION` or
+         * Node category. Must be `COMPOSITE`, `DECORATOR`, `TASK` or
          * `CONDITION`. This is defined automatically be inheriting the
          * correspondent class.
-         * @type {string}
+         * @type {NodeCategory}
          **/
         this.category = category || '';
 
@@ -54,7 +54,7 @@ class BaseNode {
          * type of node. Must be a unique. e.g. class name
          * @type {string}
          **/
-        this.type = type || '';
+        this.type = type || this.constructor.name;
 
         /**
          * Node name.
