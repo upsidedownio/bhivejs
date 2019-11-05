@@ -1,5 +1,7 @@
 const Logger = require('../utils/Logger');
 
+/** @module Context */
+
 /**
  * @typedef {object} RunLog
  * @property {object} context
@@ -8,7 +10,7 @@ const Logger = require('../utils/Logger');
 
 /**
  * Class Context
- **/
+ */
 class Context {
     /**
      * @constructor
@@ -17,9 +19,16 @@ class Context {
      * @param {BehaviorTreeOptions}    [options]
      */
     constructor(tree, blackboard, options = {}) {
-        /** @type {BehaviorTree} */
+        /** @type {BehaviorTree}
+         * @deprecated
+         * @description use behaviorTree instead
+         * */
         this.tree = tree;
-        /** @type {Blackboard} */
+        this.behaviorTree = tree;
+        /**
+         * @type {Blackboard}
+         * @private
+         */
         this._blackboard = blackboard;
         /** @type {BehaviorTreeOptions} */
         this.options = options;
@@ -36,11 +45,15 @@ class Context {
         return this._blackboard;
     }
 
-    /**
-     * @param {Blackboard} blackboard
-     */
     set blackboard(blackboard) {
         this._blackboard = blackboard;
+    }
+
+    /**
+     * @type {TreeBoard}
+     */
+    get treeBoard() {
+        return this._blackboard.tree(this.behaviorTree);
     }
 
     /**
@@ -54,6 +67,8 @@ class Context {
      * @param {BaseNode} node   - caller node
      **/
     openNode(node) {
+        this.treeBoard.createNode(node);
+        this.treeBoard.node(node).openNode();
         this.activeNodes.push(node);
         this.logger.DEBUG_debug('  '.repeat(this.activeNodes.length) + `OPEN \t${node.name} - ${node.type} - ${node.id}`);
     }
@@ -69,6 +84,7 @@ class Context {
      * @param {BaseNode} node   - caller node
      **/
     closeNode(node) {
+        this.treeBoard.node(node).closeNode();
         this.logger.DEBUG_debug('  '.repeat(this.activeNodes.length) + `CLOSE \t${node.name} - ${node.type} - ${node.id}`);
         this.activeNodes.pop();
     }

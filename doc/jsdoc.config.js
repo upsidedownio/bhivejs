@@ -25,17 +25,15 @@ module.exports = {
         cleverLinks: false,
         monospaceLinks: false,
         default: {
-            outputSourceFiles: false
+            outputSourceFiles: true
         },
         "better-docs": {
             name: "BHive.js",
-            "trackingCode": "tracking-code-which-will-go-to-the-HEAD",
             navigation: [{
+                search: true,
+                hideGenerator: true,
                 "label": "Github",
                 "href": "https://github.com/upsidedownio/bhivejs"
-            }, {
-                "label": "Example Application",
-                "href": "https://admin-bro-example-app.herokuapp.com/admin"
             }]
         }
     }

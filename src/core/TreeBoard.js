@@ -7,6 +7,10 @@ const NodeBoard = require('./NodeBoard');
  * @extends Board
  */
 class TreeBoard extends Board {
+
+    /**
+     * @constructor
+     */
     constructor() {
         super();
         /**
@@ -18,9 +22,10 @@ class TreeBoard extends Board {
 
     /**
      * @param {BaseNode|string} node
-     * @param {object} opts
-     * @param {boolean} [opts.safe=false] if this flag enabled, generate empty node board when cannot find node board
-     * @returns {Board}
+     * @param {object}      params
+     * @param {boolean}    [params.safe=false]      - if this flag enabled, generate empty NodeBoard
+     *                                                  when cannot find node board
+     * @returns {NodeBoard}
      */
     node(node, {safe = true} = {safe: false}) {
         if (!node) {
@@ -42,6 +47,11 @@ class TreeBoard extends Board {
         return this._nodes;
     }
 
+    /**
+     * Check this TreeBoard is empty or not
+     * It returns true when both tree memory and node memory are empty
+     * @returns {boolean}
+     */
     isEmpty() {
         if (!super.isEmpty()) {
             return false;
@@ -55,15 +65,16 @@ class TreeBoard extends Board {
     }
 
     /**
-     * @returns {UUID[]}
+     * Returns list of NodeId
+     * @returns {NodeId[]}
      */
-    listNode(){
+    listNode() {
         return Object.keys(this._nodes);
     }
 
     /**
-     * create board for node
-     * @param {BaseNode|UUID} node
+     * Create board for node
+     * @param {BaseNode|NodeId} node
      * @returns {Board|undefined} return created board, if failed, is returns undefined
      */
     createNode(node) {
@@ -80,7 +91,7 @@ class TreeBoard extends Board {
     }
 
     /**
-     * @param {BaseNode|UUID} node
+     * @param {BaseNode|NodeId} node
      * @returns {boolean} deletion success or not
      */
     removeNode(node) {
@@ -91,6 +102,10 @@ class TreeBoard extends Board {
         return true;
     }
 
+    /**
+     * Remove empty node memory
+     * @returns {void}
+     */
     gc() {
         for (let [node, nodeId] of this._nodes) {
             if (node.isEmpty()) {

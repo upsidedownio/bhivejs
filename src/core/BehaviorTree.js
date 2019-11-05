@@ -4,9 +4,11 @@ const Context = require('./Context');
 const Blackboard = require('./Blackboard');
 const {defaultBehaviorTreeOptions} = require('../constants');
 
+/** @module BehaviorTree */
+
 /**
  * Class BehaviorTree
- **/
+ */
 class BehaviorTree {
 
     /**
@@ -36,6 +38,7 @@ class BehaviorTree {
         this.properties = properties || {};
         /**
          * @type {BaseNode}
+         * @private
          */
         this._root = root;
         /**
@@ -48,8 +51,10 @@ class BehaviorTree {
         this.debug = this.options.debug || false;
         /**
          * @type {Blackboard}
+         * @private
          */
         this._blackboard = blackboard || new Blackboard();
+        this._blackboard.createTree(this);
         /**
          * @type {Context}
          */
@@ -57,44 +62,38 @@ class BehaviorTree {
     }
 
     /**
-     * @returns {BaseNode}
+     * @type {BaseNode}
      */
     get root() {
         return this._root;
     }
 
-    /**
-     * @param {BaseNode} root
-     */
     set root(root) {
         this._root = root;
     }
 
     /**
-     * @returns {Blackboard}
+     * @type {Blackboard}
      */
     get blackboard() {
         return this._blackboard;
     }
 
-    /**
-     * @param {Blackboard} blackboard
-     */
     set blackboard(blackboard) {
         this._blackboard = blackboard;
-        this.context._blackboard = blackboard;
+        this.context.blackboard = blackboard;
     }
 
     /**
      * @param {Context}    [context]
-     * @return {Constant}
+     * @return {NodeStatus}
      **/
     tick(context) {
 
         if (!context) {
             context = this.context;
         }
-        context.tree = this;
+        context.behaviorTree = this;
 
         const state = this.root.tick(context);
         context.blackboard.tree(this.id).set('activeNodes', context.activeNodes);

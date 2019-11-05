@@ -14,9 +14,9 @@ class TreeBuilder {
 
     /**
      * @constructor
-     * @param {object}          param
-     * @param {Registry}        param.registry
-     * @param {TreeDefinition}  param.treeDefinition
+     * @param {object}          params
+     * @param {Registry}        params.registry
+     * @param {TreeDefinition}  params.treeDefinition
      */
     constructor({registry, treeDefinition} = {}) {
         /** @type {Registry} */

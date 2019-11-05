@@ -1,15 +1,11 @@
-const _ = require('lodash');
 const Board = require('./Board');
-
-/**
- * @typedef {string} UUID
- */
 
 /**
  * Class NodeBoard
  */
 class NodeBoard extends Board {
     /**
+     * @constructor
      * @param {object}  [opt={isOpen: false}]       options
      * @param {boolean} [opt.isOpen=false]          initial value of openFlag
      */

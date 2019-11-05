@@ -6,13 +6,16 @@ const {DECORATOR} = require('../constants');
  * @extends BaseNode
  */
 class BaseDecorator extends BaseNode {
-     /**
+
+    /**
      * Creates an instance of Decorator.
      * @constructor
-     * @param {Object} opts
-     * @param {String} opts.type Node type. Default to `Decorator`.
-     * @param {String} opts.name
-     * @param {Object} opts.properties
+     * @param {object}      params
+     * @param {BaseNode}    params.child                - The node that affected under the decorator
+     * @param {string}     [params.type]                - Node type. Default to `Decorator`
+     * @param {string}     [params.name='Decorator']
+     * @param {string}     [params.description]
+     * @param {object}     [params.properties]
      */
     constructor({child = null, type = 'Decorator', name, description, properties} = {}) {
         super({

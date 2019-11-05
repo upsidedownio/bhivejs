@@ -3,8 +3,12 @@ const Board = require('./Board');
 const TreeBoard = require('./TreeBoard');
 
 /**
+ * @module BlackBoard
+ */
+
+/**
  * Class Blackboard
- **/
+ */
 class Blackboard {
 
     /**
@@ -14,7 +18,7 @@ class Blackboard {
     constructor() {
         /** @type {Board} */
         this._shared = new Board();
-        /** @type {Object.<UUID, TreeBoard>} */
+        /** @type {Object.<NodeId, TreeBoard>} */
         this._trees = {};
     }
 
@@ -35,7 +39,8 @@ class Blackboard {
     }
 
     /**
-     * @param {BehaviorTree|UUID} tree
+     * Create new TreeBoard
+     * @param {BehaviorTree|NodeId} tree
      * @returns {undefined|TreeBoard}
      */
     createTree(tree) {
@@ -52,7 +57,8 @@ class Blackboard {
     }
 
     /**
-     * @param {BehaviorTree|UUID} tree
+     * Remove specific TreeBoard
+     * @param {BehaviorTree|NodeId} tree
      * @returns {boolean}
      */
     removeTree(tree) {
@@ -65,7 +71,7 @@ class Blackboard {
 
     /**
      * Get list of BehaviorTree Id
-     * @returns {UUID[]}
+     * @returns {NodeId[]}
      */
     listTree() {
         return Object.keys(this._trees);
@@ -80,6 +86,7 @@ class Blackboard {
     }
 
     /**
+     * Get all TreeBoard
      * @type {Object.<string, TreeBoard>}
      */
     get trees() {
@@ -87,6 +94,7 @@ class Blackboard {
     }
 
     /**
+     * Dump blackboard data in JSON
      * @returns {object}
      */
     toJSON() {
@@ -100,6 +108,7 @@ class Blackboard {
     }
 
     /**
+     * Set data with key
      * @param {String}  key     - key where store value
      * @param {*}       value   - value to store
      **/
@@ -108,6 +117,7 @@ class Blackboard {
     }
 
     /**
+     * Get data by using key
      * @param {String} key          - key
      * @return {*}
      **/

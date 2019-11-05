@@ -66,6 +66,9 @@ class Logger {
         // }
     }
 
+    /**
+     * @type {Logger}
+     */
     get logger() {
         return this._log;
     }
@@ -74,6 +77,9 @@ class Logger {
         this._log = logger;
     }
 
+    /**
+     * @type {Logger}
+     */
     get debugLogger() {
         return this._debugLog;
     }
@@ -93,12 +99,24 @@ class Logger {
         return (context.debug && (level_log <= level_debug));
     }
 
+    /**
+     * @param {SYSLOG_LEVEL} level
+     * @param {string} message
+     * @param {object} [extra]
+     * @returns {*}
+     */
     debugLog(level, message, extra) {
         if (this.checkDebugLogLevel(this.context, level)) {
             return this._debugLog(level, message, extra)
         }
     }
 
+    /**
+     * @param {SYSLOG_LEVEL} level
+     * @param {string} message
+     * @param {object} [extra]
+     * @returns {*}
+     */
     log(level, message, extra) {
         return this._log(level, message, extra);
     }

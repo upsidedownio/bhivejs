@@ -25,7 +25,7 @@ class RewindWhenRunning extends BaseDecorator {
     /**
      * Context method.
      * @param {Context} context A run instance.
-     * @return {Constant} A state constant.
+     * @return {NodeStatus} A state constant.
      **/
     run(context) {
         if (!this.child) {
@@ -35,7 +35,7 @@ class RewindWhenRunning extends BaseDecorator {
         let status = this.child.tick(context);
 
         if (status === RUNNING) {
-            context.blackboard.tree(context.tree.id).node(this.child.id).set('runningChild', 0);
+            context.treeBoard.node(this.child.id).set('runningChild', 0);
         }
 
         return status;

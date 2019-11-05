@@ -35,20 +35,20 @@ class UntilSuccess extends BaseDecorator {
      * @param {Context} context A run instance.
      **/
     open(context) {
-        context.blackboard.tree(context.tree.id).node(this.id).set('i', 0);
+        context.treeBoard.node(this.id).set('i', 0);
     }
 
     /**
      * Context method.
      * @param {Context} context A run instance.
-     * @return {Constant} A state constant.
+     * @return {NodeStatus} A state constant.
      **/
     run(context) {
         if (!this.child) {
             return ERROR;
         }
 
-        let i = context.blackboard.tree(context.tree.id).node(this.id).get('i');
+        let i = context.treeBoard.node(this.id).get('i');
         let childStatus = RUNNING;
 
         if (this.maxLoop < 0 || i < this.maxLoop) {
@@ -70,7 +70,7 @@ class UntilSuccess extends BaseDecorator {
             return SUCCESS;
         }
 
-        context.blackboard.tree(context.tree.id).node(this.id).set('i', i);
+        context.treeBoard.node(this.id).set('i', i);
         return childStatus;
     }
 }

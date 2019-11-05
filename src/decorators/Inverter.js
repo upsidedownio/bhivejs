@@ -30,7 +30,7 @@ class Inverter extends BaseDecorator {
      * Context method.
      * @override
      * @param {Context} context A run instance.
-     * @return {Constant} A state constant.
+     * @return {NodeStatus} A state constant.
      **/
     run(context) {
         if (!this.child) {

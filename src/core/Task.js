@@ -8,10 +8,10 @@ const {TASK} = require('../constants');
 class Task extends BaseNode {
     /**
      * Creates an instance of Task.
-     * @param {Object} [options]
-     * @param {String} [options.type='Action'] Node type.
-     * @param {String} [options.name]
-     * @param {Object} [options.properties]
+     * @param {Object} [params]
+     * @param {String} [params.type='Action'] Node type.
+     * @param {String} [params.name]
+     * @param {Object} [params.properties]
      */
     constructor({type = 'Task', name, run, description ,properties} = {}) {
         super({
@@ -21,7 +21,7 @@ class Task extends BaseNode {
             description,
             properties
         });
-        /** @type {function} */
+        /** @type {function(Context)} */
         this.run = run;
     }
 

@@ -14,14 +14,14 @@ const {SUCCESS, FAILURE, ERROR, RUNNING} = require('../constants');
 class UntilFailure extends BaseDecorator {
 
     /**
-     * Creates an instance of UntilFailure.
-     *
-     * - **maxLoop** (*Integer*) Maximum number of repetitions. Default to -1 (infinite).
+     * Creates an instance of UntilFailure.  
+     * - **maxLoop** (*Integer*) Maximum number of repetitions. Default to -1 (infinite).  
      * - **child** (*BaseNode*) The child node.
      * @constructor
-     * @param {Object} params Object with parameters.
-     * @param {Number} params.maxLoop Maximum number of repetitions. Default to -1 (infinite).
-     * @param {BaseNode} params.child The child node.
+     * @param {object}      params              - Object with parameters.
+     * @param {BaseNode}    params.child        - The child node.
+     * @param {number}     [params.maxLoop=-1]  - Maximum number of repetitions.
+     *                                              Default to -1 (infinite).
      **/
     constructor({maxLoop = -1, child = null} = {}) {
         super({
@@ -39,20 +39,20 @@ class UntilFailure extends BaseDecorator {
      * @param {Context} context A run instance.
      **/
     open(context) {
-        context.blackboard.tree(context.tree.id).node(this.id).set('i', 0);
+        context.treeBoard.node(this.id).set('i', 0);
     }
 
     /**
      * Context method.
      * @param {Context} context A run instance.
-     * @return {Constant} A state constant.
+     * @return {NodeStatus} A state constant.
      **/
     run(context) {
         if (!this.child) {
             return ERROR;
         }
 
-        let i = context.blackboard.tree(context.tree.id).node(this.id).get('i');
+        let i = context.treeBoard.node(this.id).get('i');
         let childStatus = RUNNING;
 
         if (this.maxLoop < 0 || i < this.maxLoop) {
@@ -72,7 +72,7 @@ class UntilFailure extends BaseDecorator {
             return SUCCESS;
         }
 
-        context.blackboard.tree(context.tree.id).node(this.id).set('i', i);
+        context.treeBoard.node(this.id).set('i', i);
         return childStatus;
     }
 }

@@ -26,16 +26,16 @@ class Sequence extends BaseComposite {
      * @param {Context} context
      **/
     open(context) {
-        context.blackboard.tree(context.tree.id).node(this.id).set('runningChild', 0);
+        context.treeBoard.node(this.id).set('runningChild', 0);
     }
 
     /**
      * @override
      * @param {Context} context
-     * @return {Constant}
+     * @return {NodeStatus}
      **/
     run(context) {
-        const nodeBoard = context.blackboard.tree(context.tree.id).node(this.id);
+        const nodeBoard = context.treeBoard.node(this.id);
         const child = nodeBoard.get('runningChild');
         for (let i = child; i < this.children.length; i++) {
             const status = this.children[i].tick(context);

@@ -40,7 +40,7 @@ class Repeater extends Decorator {
      * @returns {void}
      **/
     open(context) {
-        context.blackboard.tree(context.tree.id).node(this.id).set('i', 0);
+        context.treeBoard.node(this.id).set('i', 0);
     }
 
     /**
@@ -52,7 +52,7 @@ class Repeater extends Decorator {
             return ERROR;
         }
 
-        let i = context.blackboard.tree(context.tree.id).node(this.id).get('i');
+        let i = context.treeBoard.node(this.id).get('i');
         let status = SUCCESS;
 
         if (this.maxLoop < 0 || i < this.maxLoop) {
@@ -65,7 +65,7 @@ class Repeater extends Decorator {
             return SUCCESS;
         }
 
-        context.blackboard.tree(context.tree.id).node(this.id).set('i', i);
+        context.treeBoard.node(this.id).set('i', i);
         return status;
     }
 }

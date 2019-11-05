@@ -4,20 +4,24 @@ const {COMPOSITE} = require('../constants');
 /**
  * Class BaseComposite
  * @extends BaseNode
- **/
+ */
 class BaseComposite extends BaseNode {
+
     /**
-     * @param {Object}      options
-     * @param {BaseNode[]}  options.children
-     * @param {String}      options.type        Node type
-     * @param {String}      options.name
-     * @param {Object}      options.properties
+     * @constructor
+     * @param {object}      params
+     * @param {BaseNode[]}  params.children
+     * @param {string}      params.type            - Node type (class name)
+     * @param {string}      params.name
+     * @param {string}     [params.description]
+     * @param {object}     [params.properties]
      */
-    constructor({children = [], type = 'Composite', name, properties} = {}) {
+    constructor({children = [], type = 'Composite', name, description, properties} = {}) {
         super({
             category: COMPOSITE,
             type,
             name,
+            description,
             properties,
         });
         this.children = (children).slice(0);

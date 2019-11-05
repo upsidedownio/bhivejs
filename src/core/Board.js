@@ -1,13 +1,12 @@
 const _ = require('lodash');
 
 /**
- * @typedef {string} UUID
- */
-
-/**
  * Class Board
  */
 class Board {
+    /**
+     * @constructor
+     */
     constructor() {
         /** @type {Object.<string, *>} */
         this.board = {};

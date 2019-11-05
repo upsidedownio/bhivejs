@@ -22,14 +22,15 @@ class AsyncTask extends BaseNode {
      * @param {object}     [params.properties]
      * @param {function}    params.run
      */
-    constructor({type = 'AsyncTask', name, properties, run} = {}) {
+    constructor({type = 'AsyncTask', name, description, properties, run} = {}) {
         super({
             category: TASK,
             type,
             name: name || type,
+            description,
             properties
         });
-
+        /** @type {function} */
         this.run = run;
     }
 
@@ -39,7 +40,7 @@ class AsyncTask extends BaseNode {
      */
     open(context) {
         super.open(context);
-        const nodeBoard = context.blackboard.tree(context.tree).node(this);
+        const nodeBoard = context.treeBoard.node(this);
         nodeBoard.set('asyncStatus', RUNNING);
         this.run(context)
             .then((result) => {
@@ -55,11 +56,11 @@ class AsyncTask extends BaseNode {
     /**
      * @override
      * @param {Context} context A run instance.
-     * @return {Constant} A state constant.
+     * @return {NodeStatus} A state constant.
      * @protected
      **/
     _run(context) {
-        const nodeBoard = context.blackboard.tree(context.tree).node(this);
+        const nodeBoard = context.blackboard.tree(context.behaviorTree).node(this);
         return nodeBoard.get('asyncStatus');
     }
 
@@ -67,9 +68,9 @@ class AsyncTask extends BaseNode {
      * @param context
      */
     close(context) {
-        const nodeBoard = context.blackboard.tree(context.tree).node(this);
+        const nodeBoard = context.blackboard.tree(context.behaviorTree).node(this);
         context.logger.debug(`success asyncTask:${this.name} with status: ` + nodeBoard.get('asyncStatus'));
-        nodeBoard.clear('asyncStatus');
+        nodeBoard.unset('asyncStatus');
     }
 }
 

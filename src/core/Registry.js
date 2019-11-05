@@ -1,6 +1,6 @@
-/**@typedef {string} NodeType*/
-/**@typedef {class} NodeDefinition*/
-/**@typedef {Object.<NodeType, NodeDefinition>} Registers*/
+/** @typedef {string} NodeType */
+/** @typedef {class} NodeDefinition */
+/** @typedef {Object.<NodeType, NodeDefinition>} Registers */
 
 /**
  * Class Registry

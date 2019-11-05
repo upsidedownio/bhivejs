@@ -1,18 +1,19 @@
-// node categories
+/**
+ * Unique identifier of node. It uses the UUID format.
+ * @see RFC4122: https://tools.ietf.org/html/rfc4122
+ * @typedef {string} NodeId
+ */
+
+/** @typedef {'TASK'|'COMPOSITE'|'CONDITION'|'DECORATOR'}   NodeCategory */
 const COMPOSITE = 'composite';
 const DECORATOR = 'decorator';
 const TASK = 'task';
 
-// result status of nodes
+/** @typedef {'SUCCESS'|'FAILURE'|'RUNNING'|'ERROR'}        NodeStatus */
 const SUCCESS = 'SUCCESS';
 const FAILURE = 'FAILURE';
 const RUNNING = 'RUNNING';
 const ERROR = 'ERROR';
-
-/**
- * @typedef {string} Constant
- */
-
 
 /**
  * @typedef {Object} BehaviorTreeOptions
@@ -33,9 +34,6 @@ const defaultBehaviorTreeOptions = {
     customLoggerForDebug: false
 };
 
-/**
- * @type {Array<Constant>}
- */
 module.exports = {
     SUCCESS,
     FAILURE,

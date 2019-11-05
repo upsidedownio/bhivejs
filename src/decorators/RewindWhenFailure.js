@@ -1,5 +1,5 @@
 const BaseDecorator = require('../core/BaseDecorator');
-const {FAILURE, SUCCESS, ERROR} = require('../constants');
+const {FAILURE, ERROR} = require('../constants');
 
 /**
  * Class RewindWhenFailure
@@ -24,7 +24,7 @@ class RewindWhenFailure extends BaseDecorator {
     /**
      * Context method.
      * @param {Context} context A run instance.
-     * @return {Constant} A state constant.
+     * @return {NodeStatus} A state constant.
      **/
     run(context) {
         if (!this.child) {
@@ -34,7 +34,7 @@ class RewindWhenFailure extends BaseDecorator {
         let status = this.child.tick(context);
 
         if (status === FAILURE) {
-            const nodeBoard = context.blackboard.tree(context.tree.id).node(this.child.id);
+            const nodeBoard = context.treeBoard.node(this.child.id);
             context.logger.debug('rewind! ' + nodeBoard.get('runningChild') + ' to 0');
             nodeBoard.set('runningChild', 0);
         }

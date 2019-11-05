@@ -1,35 +1,27 @@
 const uuid = require('uuid/v4');
 const {RUNNING, ERROR} = require('../constants');
 
-/**
- * @typedef {string} NodeId
- */
-
-/**
- * @typedef {'TASK'|'COMPOSITE'|'CONDITION'|'DECORATOR'} NodeCategory
- */
 
 /**
  * @typedef {object} NodeData
- * @property {string} id            - uuid of class
- * @property {string} type          - type of node (e.g. class name)
- * @property {string} name          - name of node
- * @property {NodeCategory} category - categories of nodes
+ * @property {string} id                - uuid of class
+ * @property {string} type              - type of node (e.g. class name)
+ * @property {string} name              - name of node
+ * @property {NodeCategory} category    - categories of nodes
  * @property {string} description
  */
 
 /**
  * Class BaseNode
- * @category Core
- **/
-
+ */
 class BaseNode {
     /**
      * @constructor
      * @param {object}          params
      * @param {NodeCategory}    params.category
-     * @param {string}          params.type
-     * @param {string}          params.name
+     * @param {string}          params.type         - The type of the node
+     *                                                  (usually the name of the class is used)
+     * @param {string}          params.name         - The name for human
      * @param {string}          params.description
      * @param {object}          params.properties
      **/
@@ -48,7 +40,7 @@ class BaseNode {
          * correspondent class.
          * @type {NodeCategory}
          **/
-        this.category = category || '';
+        this.category = category || 'TASK';
 
         /**
          * type of node. Must be a unique. e.g. class name
@@ -80,7 +72,7 @@ class BaseNode {
 
     /**
      * @param {Context} context A run instance.
-     * @returns {Constant} The run state.
+     * @returns {NodeStatus} The run state.
      */
     tick(context) {
         return this._tick(context);
@@ -88,20 +80,20 @@ class BaseNode {
 
     /**
      * @param {Context} context A run instance.
-     * @returns {Constant} The run state.
+     * @returns {NodeStatus} The run state.
      **/
     _tick(context) {
         // ENTER
         this._enter(context);
 
         // OPEN
-        if (!context.blackboard.tree(context.tree).node(this).get('isOpen')) {
+        if (!context.treeBoard.node(this, {safe: true}).isOpen()) {
             this._open(context);
         }
 
         // RUN
         const status = this._run(context);
-        context.blackboard.tree(context.tree).node(this).set('lastStatus', status);
+        context.treeBoard.node(this).set('lastStatus', status);
 
         // CLOSE
         if (status !== RUNNING) {
@@ -131,14 +123,14 @@ class BaseNode {
      **/
     _open(context) {
         context.openNode(this);
-        context.blackboard.tree(context.tree).node(this).set('isOpen', true);
+        context.treeBoard.node(this).openNode();
         this.open(context);
     }
 
     /**
      * Wrapper for run method.
      * @param {Context} context A run instance.
-     * @return {Constant} A state constant.
+     * @return {NodeStatus} A state constant.
      * @protected
      **/
     _run(context) {
@@ -162,7 +154,7 @@ class BaseNode {
      **/
     _close(context) {
         context.closeNode(this);
-        context.blackboard.tree(context.tree.id).node(this.id).set('isOpen', false);
+        context.treeBoard.node(this.id).set('isOpen', false);
         this.close(context);
     }
 
@@ -219,7 +211,6 @@ class BaseNode {
     /**
      * Exit method, override this to use. Called every time in the end of the
      * execution.
-     *
      * @param {Context} context A run instance.
      **/
     exit(context) {
